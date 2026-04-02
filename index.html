@@ -840,9 +840,9 @@ function selectType(el, t) {
 }
 function toggleAmenity(el) { el.classList.toggle('selected'); }
 
-const photoEmojis = ['🏠','🛋️','🍳','🛁','🌿','🏊','🅿️','🌅'];
+const photobrowse = [browse device];
 let photoCount = 0;
-function addFakePhoto() {
+function addPhoto() {
   if (photoCount >= 10) { showToast('Maximum 10 photos allowed'); return; }
   const prev = document.getElementById('photoPreviews');
   const thumb = document.createElement('div');
