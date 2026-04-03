@@ -23,11 +23,11 @@
   --shadow-lg: 0 12px 48px rgba(44,24,16,0.14);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; overflow-x: hidden; }
 
-/* NAV */
+/* ─── NAVIGATION ────────────────────────────────────────────────────────────── */
 nav {
-  position: sticky; top: 0; z-index: 500;
+  position: sticky; top: 0; z-index: 1000;
   background: rgba(250,247,242,0.92); backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
   padding: 0 28px; height: 64px;
@@ -42,14 +42,31 @@ nav {
 .nav-btn.primary { background: var(--gold); color: #fff; font-weight: 600; box-shadow: 0 2px 12px rgba(201,135,58,0.35); }
 .nav-btn.primary:hover { background: var(--gold-light); transform: translateY(-1px); }
 
-/* PAGES */
 .page { display: none; }
 .page.active { display: block; }
 
-/* ── BROWSE PAGE ── */
-.browse-layout { display: grid; grid-template-columns: 380px 1fr; min-height: calc(100vh - 64px); }
+/* ─── HOME PAGE ────────────────────────────────────────────────────────────── */
+.hero { 
+  background: var(--brown); height: 520px; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center; text-align: center; color: #fff;
+}
+.hero-img { position: absolute; inset: 0; opacity: 0.4; filter: contrast(1.1) brightness(0.8); object-fit: cover; width: 100%; height: 100%; }
+.hero-content { position: relative; z-index: 10; max-width: 800px; padding: 0 24px; }
+.hero-content h1 { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 900; line-height: 1.1; margin-bottom: 20px; }
+.hero-content p { font-size: 18px; opacity: 0.9; margin-bottom: 32px; font-weight: 300; }
+.search-bar { 
+  background: #fff; border-radius: 16px; padding: 8px; display: flex; gap: 8px; 
+  box-shadow: var(--shadow-lg); max-width: 700px; margin: 0 auto;
+}
+.search-input { flex: 1; border: none; outline: none; padding: 0 16px; font-family: 'Outfit', sans-serif; font-size: 15px; color: var(--text); }
 
-/* FILTERS SIDEBAR */
+.home-stats { display: flex; justify-content: center; gap: 60px; padding: 60px 24px; border-bottom: 1px solid var(--border); }
+.stat-item { text-align: center; }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: var(--gold); }
+.stat-label { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+/* ─── BROWSE PAGE LAYOUT ───────────────────────────────────────────────────── */
+.browse-layout { display: grid; grid-template-columns: 380px 1fr; min-height: calc(100vh - 64px); }
 .sidebar {
   background: var(--surface); border-right: 1px solid var(--border);
   overflow-y: auto; padding: 22px 20px;
@@ -57,201 +74,109 @@ nav {
 }
 .sidebar-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-bottom: 18px; color: var(--brown); }
 .filter-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 8px; margin-top: 18px; }
-.filter-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
-.chip { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 13px; color: var(--muted); cursor: pointer; transition: all 0.18s; background: transparent; font-family: 'Outfit', sans-serif; }
-.chip:hover { border-color: var(--gold); color: var(--gold); }
+.filter-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 13px; color: var(--muted); cursor: pointer; transition: all 0.18s; background: transparent; }
 .chip.active { background: var(--gold); border-color: var(--gold); color: #fff; font-weight: 600; }
-.range-row { display: flex; gap: 8px; }
-.range-input { flex: 1; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Outfit', sans-serif; font-size: 13px; color: var(--text); background: var(--cream); outline: none; }
-.range-input:focus { border-color: var(--gold); }
-.search-box { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--text); background: var(--warm); outline: none; margin-bottom: 4px; }
-.search-box:focus { border-color: var(--gold); background: #fff; }
-.apply-btn { width: 100%; margin-top: 20px; padding: 12px; background: var(--brown); color: #fff; border: none; border-radius: 10px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-.apply-btn:hover { background: var(--gold); }
-.listing-count { font-size: 12px; color: var(--muted); margin-top: 14px; text-align: center; padding-top: 14px; border-top: 1px solid var(--border); }
 
-/* MAP + CARDS */
 .map-side { display: flex; flex-direction: column; }
-.map-container { height: 55vh; position: relative; }
-#map { width: 100%; height: 100%; }
-
-/* CARDS LIST */
+#map { height: 45vh; border-bottom: 1px solid var(--border); }
 .cards-area { flex: 1; padding: 20px; overflow-y: auto; background: var(--cream); }
-.cards-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-.results-label { font-size: 14px; color: var(--muted); }
-.results-label strong { color: var(--text); }
-.sort-select { padding: 7px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Outfit', sans-serif; font-size: 13px; background: #fff; color: var(--text); outline: none; cursor: pointer; }
 .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
 
-/* PROPERTY CARD */
-.prop-card {
-  background: #fff; border-radius: 16px; overflow: hidden;
-  box-shadow: var(--shadow); transition: all 0.25s; cursor: pointer;
-  border: 1.5px solid transparent; position: relative;
+/* ─── PROPERTY CARD ────────────────────────────────────────────────────────── */
+.prop-card { 
+  background: #fff; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); 
+  cursor: pointer; transition: transform 0.2s, border 0.2s; border: 2px solid transparent; position: relative;
 }
-.prop-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
-.prop-card.highlighted { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,135,58,0.2), var(--shadow-lg); }
-.prop-card.featured-card { border: 2px solid var(--gold); }
-.card-img { height: 180px; display: flex; align-items: center; justify-content: center; font-size: 64px; position: relative; overflow: hidden; background-size: cover; background-position: center; }
-.card-badge { position: absolute; top: 12px; left: 12px; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; z-index: 2; }
-.badge-sale { background: #e74c3c; color: #fff; }
-.badge-rent { background: #2980b9; color: #fff; }
-.badge-new { background: var(--gold); color: #fff; }
-.badge-featured { position: absolute; bottom: 12px; left: 12px; background: #FFD700; color: #000; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
-
-.card-fav { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.9); border: none; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; z-index: 2; }
-.card-fav:hover { background: #fff; transform: scale(1.1); }
+.prop-card:hover { transform: translateY(-4px); }
+.prop-card.featured-card { border-color: var(--gold); }
+.card-img { height: 180px; background-size: cover; background-position: center; position: relative; }
+.badge-featured { position: absolute; top: 10px; right: 10px; background: var(--gold); color: white; padding: 4px 8px; font-size: 10px; font-weight: 700; border-radius: 4px; text-transform: uppercase; }
 .card-body { padding: 16px; }
 .card-price { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--brown); }
-.card-price span { font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 400; color: var(--muted); }
-.card-title { font-size: 14px; font-weight: 600; margin: 4px 0 2px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.card-loc { font-size: 12px; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 4px; }
-.card-specs { display: flex; gap: 14px; }
-.spec { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
-.spec strong { color: var(--text); font-weight: 600; }
 
-/* ── POST AD PAGE ── */
-.post-wrap { max-width: 760px; margin: 0 auto; padding: 40px 20px 80px; }
-.post-hero { text-align: center; margin-bottom: 40px; }
-.post-hero h1 { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 900; color: var(--brown); margin-bottom: 8px; }
-.post-hero p { color: var(--muted); font-size: 15px; }
-.form-card { background: #fff; border-radius: 20px; padding: 32px; box-shadow: var(--shadow); margin-bottom: 20px; border: 1px solid var(--border); }
-.form-section-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--brown); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+/* ─── POST AD FORM ─────────────────────────────────────────────────────────── */
+.post-wrap { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+.form-card { background: #fff; border-radius: 20px; padding: 32px; box-shadow: var(--shadow); margin-bottom: 24px; border: 1px solid var(--border); }
+.form-section-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--brown); margin-bottom: 24px; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.form-group { display: flex; flex-direction: column; gap: 6px; }
-.form-group.full { grid-column: 1/-1; }
-label { font-size: 13px; font-weight: 600; color: var(--text); }
-input[type=text], input[type=number], input[type=tel], input[type=email], select, textarea {
-  padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px;
-  font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--text);
-  background: var(--cream); outline: none; transition: border-color 0.2s;
-  width: 100%;
+.full { grid-column: 1 / -1; }
+label { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; display: block; }
+input, select, textarea { 
+    width: 100%; padding: 12px; border: 1.5px solid var(--border); border-radius: 10px; 
+    font-family: inherit; font-size: 14px; background: var(--cream); outline: none;
 }
-input:focus, select:focus, textarea:focus { border-color: var(--gold); background: #fff; }
-
-/* PROMOTION SELECTOR */
-.promo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
-.promo-opt { border: 2px solid var(--border); border-radius: 12px; padding: 15px; cursor: pointer; transition: all 0.2s; position: relative; }
-.promo-opt.selected { border-color: var(--gold); background: rgba(201,135,58,0.05); }
-.promo-opt .p-title { font-weight: 700; font-size: 15px; color: var(--brown); }
-.promo-opt .p-price { font-weight: 700; color: var(--gold); font-size: 14px; margin-top: 4px; }
-.promo-opt .p-desc { font-size: 12px; color: var(--muted); margin-top: 5px; line-height: 1.4; }
-
-/* PAYMENT SECTION */
-.payment-box { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px dashed var(--border); }
-.card-input-container { background: #f9f9f9; padding: 15px; border-radius: 10px; border: 1px solid var(--border); }
-.card-row { display: flex; gap: 10px; margin-top: 10px; }
+input:focus { border-color: var(--gold); background: #fff; }
 
 /* PHOTO UPLOAD */
-.photo-drop {
-  border: 2px dashed var(--border); border-radius: 14px;
-  padding: 32px; text-align: center; cursor: pointer;
-  transition: all 0.2s; background: var(--warm);
+.photo-upload-zone { 
+    border: 2px dashed var(--border); border-radius: 12px; padding: 40px; 
+    text-align: center; cursor: pointer; transition: 0.2s; background: var(--warm);
 }
-.photo-drop:hover { border-color: var(--gold); background: rgba(201,135,58,0.04); }
-.photo-previews { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-.photo-thumb { width: 90px; height: 90px; border-radius: 10px; background-size: cover; background-position: center; border: 1px solid var(--border); position: relative; }
-.photo-thumb .remove { position: absolute; top: -6px; right: -6px; width: 22px; height: 22px; border-radius: 50%; background: #e74c3c; color: #fff; border: none; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.photo-upload-zone:hover { border-color: var(--gold); background: #fff; }
+.photo-previews { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.thumb { width: 100px; height: 100px; border-radius: 8px; background-size: cover; position: relative; border: 1px solid var(--border); }
+.thumb .del { position: absolute; top: -5px; right: -5px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-size: 10px; }
 
-.submit-btn { width: 100%; padding: 16px; background: var(--brown); color: #fff; border: none; border-radius: 12px; font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.25s; margin-top: 10px; }
-.submit-btn:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,135,58,0.4); }
+/* PROMOTION & PAYMENT */
+.promo-box { border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; cursor: pointer; transition: 0.2s; position: relative; }
+.promo-box.active { border-color: var(--gold); background: rgba(201,135,58,0.05); }
+.promo-price { color: var(--gold); font-weight: 700; margin-top: 5px; }
+.payment-section { display: none; margin-top: 25px; padding-top: 20px; border-top: 1px dashed var(--border); }
 
-/* TOAST */
-.toast {
-  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-  background: var(--brown); color: #fff;
-  padding: 14px 20px; border-radius: 12px; font-size: 14px;
-  transform: translateY(100px); opacity: 0; transition: all 0.3s;
-  max-width: 300px; box-shadow: var(--shadow-lg);
-}
-.toast.show { transform: translateY(0); opacity: 1; }
-
-/* DETAIL MODAL */
-.modal-bg { position: fixed; inset: 0; z-index: 800; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-.modal-bg.open { opacity: 1; pointer-events: all; }
-.modal-box { background: #fff; border-radius: 20px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg); transform: translateY(20px); transition: transform 0.3s; }
-.modal-bg.open .modal-box { transform: translateY(0); }
-.modal-img { height: 280px; background-size: cover; background-position: center; position: relative; }
-.modal-close-btn { position: absolute; top: 14px; right: 14px; width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.9); border: none; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; z-index: 5; }
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .browse-layout { grid-template-columns: 1fr; }
-  .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
-  .map-container { height: 40vh; }
-  .promo-grid { grid-template-columns: 1fr; }
-}
+/* MISC */
+.toast { position: fixed; bottom: 20px; right: 20px; background: var(--brown); color: white; padding: 12px 24px; border-radius: 8px; transform: translateY(100px); transition: 0.3s; z-index: 2000; }
+.toast.show { transform: translateY(0); }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo">Infinit<span>zy</span></div>
+  <div class="logo" onclick="showPage('home')">Infinit<span>zy</span></div>
   <div class="nav-links">
-    <button class="nav-btn ghost" onclick="showPage('home')">Home</button>
-    <button class="nav-btn ghost" onclick="showPage('browse')">Browse Ads</button>
+    <button class="nav-btn ghost" onclick="showPage('browse')">Browse</button>
     <button class="nav-btn primary" onclick="showPage('post')">+ Post Ad</button>
   </div>
 </nav>
 
 <div id="page-home" class="page active">
-  <div class="landing-hero" style="background: linear-gradient(160deg, #2c1810 0%, #4a2c1a 40%, #2c1810 100%); padding: 90px 28px 80px; text-align: center; color: white;">
-    <h1 style="font-family:'Playfair Display'; font-size: 48px; margin-bottom: 15px;">Find Your Dream<br>Property in <em style="color:var(--gold-light); font-style: normal;">Sri Lanka</em></h1>
-    <p style="opacity: 0.8; margin-bottom: 30px;">Browse thousands of homes, lands, and commercial spaces.</p>
-    <div style="max-width: 600px; margin: 0 auto; background: #fff; padding: 8px; border-radius: 14px; display: flex; gap: 10px;">
-      <input type="text" id="heroSearch" placeholder="Search by city or property type..." style="flex:1; border:none; outline:none; padding: 10px; font-family: inherit;">
-      <button onclick="doHeroSearch()" class="nav-btn primary">Search</button>
+  <div class="hero">
+    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80" class="hero-img">
+    <div class="hero-content">
+      <h1>Find Your Perfect Home<br>in Sri Lanka</h1>
+      <p>The most trusted luxury real estate marketplace across the island.</p>
+      <div class="search-bar">
+        <input type="text" class="search-input" placeholder="Search by District, City or Property Type...">
+        <button class="nav-btn primary" onclick="showPage('browse')">Search</button>
+      </div>
     </div>
   </div>
-
-  <div class="landing-cats" style="padding: 60px 20px; max-width: 1100px; margin: 0 auto;">
-    <h2 style="text-align: center; font-family: 'Playfair Display'; margin-bottom: 30px;">Featured & Top Listings</h2>
-    <div class="cards-grid" id="featuredGrid">
-      </div>
+  <div class="home-stats">
+    <div class="stat-item"><div class="stat-num" id="stat-ads">120+</div><div class="stat-label">Active Ads</div></div>
+    <div class="stat-item"><div class="stat-num">25</div><div class="stat-label">Districts</div></div>
+    <div class="stat-item"><div class="stat-num">4.9/5</div><div class="stat-label">User Rating</div></div>
   </div>
 </div>
 
 <div id="page-browse" class="page">
   <div class="browse-layout">
     <div class="sidebar">
-      <div class="sidebar-title">🔍 Filter Properties</div>
-      <input type="text" class="search-box" id="browseSearch" placeholder="Search location, title…" oninput="applyFilters()">
-      
+      <div class="sidebar-title">Filters</div>
       <div class="filter-label">Listing Type</div>
-      <div class="filter-chips" id="typeChips">
-        <div class="chip active" onclick="toggleChip(this,'type')">All</div>
-        <div class="chip" onclick="toggleChip(this,'type')">For Sale</div>
-        <div class="chip" onclick="toggleChip(this,'type')">For Rent</div>
+      <div class="filter-chips">
+        <div class="chip active">All</div><div class="chip">Sale</div><div class="chip">Rent</div>
       </div>
-
       <div class="filter-label">Property Type</div>
-      <div class="filter-chips" id="propChips">
-        <div class="chip active" onclick="toggleChip(this,'prop')">All</div>
-        <div class="chip" onclick="toggleChip(this,'prop')">House</div>
-        <div class="chip" onclick="toggleChip(this,'prop')">Apartment</div>
-        <div class="chip" onclick="toggleChip(this,'prop')">Land</div>
+      <div class="filter-chips">
+        <div class="chip active">All</div><div class="chip">House</div><div class="chip">Land</div><div class="chip">Apartment</div>
       </div>
-
-      <div class="filter-label">District</div>
-      <select id="browseDist" class="range-input" onchange="activeFilters.dist=this.value; applyFilters()" style="width:100%; background:white;">
-        <option value="All">All Districts</option>
-        <option>Colombo</option><option>Galle</option><option>Kandy</option><option>Negombo</option>
-      </select>
-
-      <button class="apply-btn" onclick="resetFilters()">Reset Filters</button>
+      <div class="filter-label" style="margin-top:20px">District</div>
+      <select id="filter-dist"><option value="">All Districts</option><option>Colombo</option><option>Kandy</option><option>Galle</option></select>
     </div>
-
     <div class="map-side">
-      <div class="map-container"><div id="map"></div></div>
+      <div id="map"></div>
       <div class="cards-area">
-        <div class="cards-header">
-          <div class="results-label"><strong id="resultCount">0</strong> properties found</div>
-          <select class="sort-select" onchange="applyFilters()" id="sortSelect">
-            <option value="newest">Newest First</option>
-            <option value="price-asc">Price: Low to High</option>
-          </select>
-        </div>
-        <div class="cards-grid" id="cardsGrid"></div>
+        <div class="cards-grid" id="browse-grid"></div>
       </div>
     </div>
   </div>
@@ -259,284 +184,161 @@ input:focus, select:focus, textarea:focus { border-color: var(--gold); backgroun
 
 <div id="page-post" class="page">
   <div class="post-wrap">
-    <div class="post-hero">
-      <h1>Post Your Property Ad</h1>
-      <p>Fill in the details below to reach buyers across the island.</p>
-    </div>
-
     <div class="form-card">
-      <div class="form-section-title">📷 Property Photos</div>
-      <div class="photo-drop" onclick="document.getElementById('fileInput').click()">
-        <div style="font-size: 40px; margin-bottom: 10px;">📤</div>
-        <p><strong>Click to browse</strong> images from your device</p>
-        <p style="font-size: 12px; color: var(--muted);">Maximum 10 photos • JPG, PNG</p>
-        <input type="file" id="fileInput" multiple accept="image/*" style="display: none" onchange="handleFileSelect(event)">
+      <div class="form-section-title">Property Photos</div>
+      <div class="photo-upload-zone" onclick="document.getElementById('fileInput').click()">
+        <p>📷 <strong>Click to Browse Photos</strong></p>
+        <p style="font-size:12px; color:var(--muted)">Select images from your device (Max 10)</p>
+        <input type="file" id="fileInput" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)">
       </div>
       <div class="photo-previews" id="photoPreviews"></div>
     </div>
 
     <div class="form-card">
-      <div class="form-section-title">🏠 Basic Details</div>
+      <div class="form-section-title">General Details</div>
       <div class="form-grid">
-        <div class="form-group full"><label>Ad Title *</label><input type="text" id="f-title" placeholder="e.g. Modern Villa in Galle"></div>
-        <div class="form-group"><label>Property Type</label><select id="f-proptype"><option>House</option><option>Apartment</option><option>Land</option></select></div>
-        <div class="form-group"><label>Price (LKR)</label><input type="number" id="f-price" placeholder="e.g. 5000000"></div>
-        <div class="form-group"><label>District</label><select id="f-district" onchange="updateMapPin()"><option>Colombo</option><option>Galle</option><option>Kandy</option><option>Negombo</option></select></div>
-        <div class="form-group"><label>City</label><input type="text" id="f-city" placeholder="e.g. Unawatuna"></div>
-        <div class="form-group full"><label>Description</label><textarea id="f-desc" placeholder="Describe features, amenities, nearby places..."></textarea></div>
+        <div class="form-group full"><label>Ad Title</label><input type="text" id="f-title" placeholder="e.g. Modern 3-Bedroom House"></div>
+        <div class="form-group"><label>Property Type</label><select id="f-type"><option>House</option><option>Apartment</option><option>Land</option></select></div>
+        <div class="form-group"><label>Price (LKR)</label><input type="number" id="f-price" placeholder="5,000,000"></div>
+        <div class="form-group"><label>District</label><select id="f-dist"><option>Colombo</option><option>Galle</option><option>Kandy</option></select></div>
+        <div class="form-group"><label>City</label><input type="text" id="f-city"></div>
       </div>
-      <div id="postMap" style="height: 200px; margin-top: 15px; border-radius: 10px;"></div>
-      <input type="hidden" id="f-lat" value="6.9271"><input type="hidden" id="f-lng" value="79.8612">
     </div>
 
     <div class="form-card">
-        <div class="form-section-title">🚀 Promote Your Ad</div>
-        <div class="promo-grid">
-            <div class="promo-opt selected" onclick="setPromo(this, 'Free', 0)">
-                <div class="p-title">Free Ad</div>
-                <div class="p-price">Rs. 0</div>
-                <div class="p-desc">Standard listing in browse results.</div>
-            </div>
-            <div class="promo-opt" onclick="setPromo(this, 'Top Ad', 2500)">
-                <div class="p-title">⭐ Top Ad</div>
-                <div class="p-price">Rs. 2,500</div>
-                <div class="p-desc">Stays at the top of category for 7 days.</div>
-            </div>
-            <div class="promo-opt" onclick="setPromo(this, 'Featured', 7500)">
-                <div class="p-title">💎 Featured</div>
-                <div class="p-price">Rs. 7,500</div>
-                <div class="p-desc">Highlighted on Homepage & Map. 5x more views.</div>
-            </div>
+      <div class="form-section-title">Promote Your Ad</div>
+      <div class="form-grid">
+        <div class="promo-box active" onclick="selectPromo(this, 'Free', 0)">
+          <strong>Free Ad</strong>
+          <div class="promo-price">Rs. 0</div>
         </div>
-
-        <div class="payment-box" id="paymentSection">
-            <div class="form-section-title" style="font-size: 16px;">💳 Payment Details</div>
-            <div class="card-input-container">
-                <div class="form-group"><label>Cardholder Name</label><input type="text" placeholder="Name on card"></div>
-                <div class="form-group" style="margin-top:10px;"><label>Card Number</label><input type="text" placeholder="0000 0000 0000 0000"></div>
-                <div class="card-row">
-                    <div class="form-group" style="flex:2;"><label>Expiry</label><input type="text" placeholder="MM / YY"></div>
-                    <div class="form-group" style="flex:1;"><label>CVC</label><input type="password" placeholder="***"></div>
-                </div>
-            </div>
+        <div class="promo-box" onclick="selectPromo(this, 'Top Ad', 2500)">
+          <strong>⭐ Top Ad</strong>
+          <div class="promo-price">Rs. 2,500</div>
         </div>
-    </div>
-
-    <div class="form-card">
-        <div class="form-section-title">📞 Contact</div>
-        <div class="form-grid">
-            <div class="form-group"><label>Name</label><input type="text" id="f-name"></div>
-            <div class="form-group"><label>Phone</label><input type="tel" id="f-phone"></div>
+        <div class="promo-box" onclick="selectPromo(this, 'Featured', 7500)">
+          <strong>💎 Featured</strong>
+          <div class="promo-price">Rs. 7,500</div>
         </div>
-    </div>
+      </div>
 
-    <button class="submit-btn" onclick="submitAd()">🏠 Publish Ad Now</button>
-  </div>
-</div>
-
-<div class="modal-bg" id="detailModal">
-  <div class="modal-box" style="position:relative">
-    <button class="modal-close-btn" onclick="closeModal()">✕</button>
-    <div class="modal-img" id="modal-img"></div>
-    <div class="modal-body">
-      <h2 id="modal-title"></h2>
-      <div class="modal-price" id="modal-price" style="color:var(--gold); font-size: 24px; font-weight: 700; margin: 10px 0;"></div>
-      <p id="modal-loc" style="color: var(--muted); font-size: 14px; margin-bottom: 15px;"></p>
-      <div id="modal-desc" style="line-height: 1.6; font-size: 15px; color: #444; border-top: 1px solid var(--border); padding-top: 15px;"></div>
-      <div class="modal-contact" style="display:flex; gap: 10px; margin-top: 25px;">
-        <button class="nav-btn primary" style="flex:1" onclick="showToast('Contacting...')">Call Seller</button>
-        <button class="nav-btn ghost" style="flex:1; border: 1px solid var(--border)" onclick="showToast('Opening WhatsApp...')">WhatsApp</button>
+      <div class="payment-section" id="paySection">
+        <div class="form-section-title" style="font-size:16px;">Secure Payment (Stripe)</div>
+        <div class="form-group"><label>Cardholder Name</label><input type="text" placeholder="John Doe"></div>
+        <div class="form-group" style="margin-top:10px;"><label>Card Number</label><input type="text" placeholder="0000 0000 0000 0000"></div>
+        <div class="form-grid" style="margin-top:10px;">
+          <div class="form-group"><label>Expiry (MM/YY)</label><input type="text" placeholder="12/26"></div>
+          <div class="form-group"><label>CVC</label><input type="password" placeholder="***"></div>
+        </div>
       </div>
     </div>
+
+    <button class="nav-btn primary" style="width:100%; padding:18px; font-size:18px;" onclick="submitAd()">Publish Ad Now</button>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// DATA & STATE
-const DISTRICTS = { 'Colombo':[6.9271, 79.8612], 'Galle':[6.0535, 80.2210], 'Kandy':[7.2906, 80.6337], 'Negombo':[7.2083, 79.8358] };
 let listings = [
-  { id:1, title:'Luxury Villa Galle', type:'For Sale', propType:'House', price:45000000, district:'Galle', city:'Unawatuna', desc:'Prime villa.', promo:'Featured', images:[], lat:6.01, lng:80.24, posted: Date.now() },
-  { id:2, title:'Modern Apartment Colombo', type:'For Sale', propType:'Apartment', price:25000000, district:'Colombo', city:'Colombo 03', desc:'Modern city living.', promo:'Top Ad', images:[], lat:6.91, lng:79.85, posted: Date.now() }
+    { id:1, title: 'Sea View Villa', price: 45000000, district: 'Galle', city: 'Unawatuna', type: 'House', images: [], promo: 'Featured' },
+    { id:2, title: 'Luxury Penthouse', price: 85000000, district: 'Colombo', city: 'Colombo 03', type: 'Apartment', images: [], promo: 'Top Ad' }
 ];
-
-let uploadedImages = [];
-let activeFilters = { type:'All', prop:'All', dist:'All', search:'' };
+let currentImages = [];
 let selectedPromo = 'Free';
-let map, postMap, postMarker;
+let map;
 
-// NAVIGATION
 function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  if (id === 'browse') { setTimeout(initMap, 200); applyFilters(); }
-  if (id === 'post') { setTimeout(initPostMap, 200); }
-  if (id === 'home') renderFeatured();
-  window.scrollTo(0,0);
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-'+id).classList.add('active');
+    if(id === 'browse') initMap();
+    window.scrollTo(0,0);
 }
 
-// PHOTO BROWSING
-function handleFileSelect(e) {
-  const files = Array.from(e.target.files);
-  if (uploadedImages.length + files.length > 10) { showToast("Max 10 photos allowed"); return; }
-  
-  files.forEach(file => {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      uploadedImages.push(event.target.result);
-      renderPreviews();
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-function renderPreviews() {
-  const container = document.getElementById('photoPreviews');
-  container.innerHTML = uploadedImages.map((src, index) => `
-    <div class="photo-thumb" style="background-image: url(${src})">
-      <button class="remove" onclick="removeImg(${index})">✕</button>
-    </div>
-  `).join('');
-}
-
-function removeImg(idx) {
-  uploadedImages.splice(idx, 1);
-  renderPreviews();
-}
-
-// PROMOTION & PAYMENT
-function setPromo(el, type, price) {
-    document.querySelectorAll('.promo-opt').forEach(o => o.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedPromo = type;
-    document.getElementById('paymentSection').style.display = price > 0 ? 'block' : 'none';
-}
-
-// MAP LOGIC
-function initMap() {
-  if (map) return;
-  map = L.map('map').setView([7.8731, 80.7718], 7);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-}
-
-function initPostMap() {
-    if (postMap) return;
-    postMap = L.map('postMap').setView([7.8731, 80.7718], 7);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(postMap);
-    postMarker = L.marker([7.8731, 80.7718], {draggable: true}).addTo(postMap);
-}
-
-function updateMapPin() {
-    const d = document.getElementById('f-district').value;
-    if(DISTRICTS[d]) {
-        postMarker.setLatLng(DISTRICTS[d]);
-        postMap.setView(DISTRICTS[d], 12);
-    }
-}
-
-// CARDS RENDERING
-function renderFeatured() {
-    const grid = document.getElementById('featuredGrid');
-    const featured = listings.filter(l => l.promo !== 'Free');
-    grid.innerHTML = featured.map(l => cardTemplate(l)).join('');
-}
-
-function cardTemplate(l) {
-  const img = l.images && l.images[0] ? `style="background-image:url(${l.images[0]})"` : `style="background-color:#eee"`;
-  const emoji = {House:'🏠', Apartment:'🏢', Land:'🌿'}[l.propType] || '🏠';
-  return `
-    <div class="prop-card ${l.promo==='Featured'?'featured-card':''}" onclick="openDetail(${l.id})">
-      <div class="card-img" ${img}>
-        ${!l.images[0] ? emoji : ''}
-        <div class="card-badge ${l.type==='For Sale'?'badge-sale':'badge-rent'}">${l.type}</div>
-        ${l.promo !== 'Free' ? `<div class="badge-featured">${l.promo}</div>` : ''}
-      </div>
-      <div class="card-body">
-        <div class="card-price">Rs. ${l.price.toLocaleString()}</div>
-        <div class="card-title">${l.title}</div>
-        <div class="card-loc">📍 ${l.city}, ${l.district}</div>
-      </div>
-    </div>`;
-}
-
-function applyFilters() {
-    const grid = document.getElementById('cardsGrid');
-    const filtered = listings.filter(l => {
-        if(activeFilters.dist !== 'All' && l.district !== activeFilters.dist) return false;
-        if(activeFilters.prop !== 'All' && l.propType !== activeFilters.prop) return false;
-        return true;
+// ─── PHOTO HANDLING ───
+function handleFiles(files) {
+    Array.from(files).forEach(file => {
+        if (currentImages.length >= 10) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            currentImages.push(e.target.result);
+            renderThumbs();
+        };
+        reader.readAsDataURL(file);
     });
-    document.getElementById('resultCount').textContent = filtered.length;
-    grid.innerHTML = filtered.map(l => cardTemplate(l)).join('');
 }
 
-// FORM SUBMISSION
-function submitAd() {
-    const title = document.getElementById('f-title').value;
-    if(!title) { showToast("Please enter a title"); return; }
-    
-    const newAd = {
-        id: Date.now(),
-        title: title,
-        type: 'For Sale',
-        propType: document.getElementById('f-proptype').value,
-        price: parseInt(document.getElementById('f-price').value) || 0,
-        district: document.getElementById('f-district').value,
-        city: document.getElementById('f-city').value,
-        desc: document.getElementById('f-desc').value,
-        promo: selectedPromo,
-        images: [...uploadedImages],
-        posted: Date.now()
-    };
-    
-    listings.unshift(newAd);
-    showToast("Ad Published Successfully!");
-    setTimeout(() => showPage('browse'), 1000);
+function renderThumbs() {
+    const div = document.getElementById('photoPreviews');
+    div.innerHTML = currentImages.map((src, i) => `
+        <div class="thumb" style="background-image:url(${src})">
+            <button class="del" onclick="removeImg(${i})">✕</button>
+        </div>
+    `).join('');
 }
 
-// UTILS
-function toggleChip(el, group) {
-    el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+function removeImg(i) {
+    currentImages.splice(i, 1);
+    renderThumbs();
+}
+
+// ─── PROMOTION ───
+function selectPromo(el, type, price) {
+    document.querySelectorAll('.promo-box').forEach(b => b.classList.remove('active'));
     el.classList.add('active');
-    activeFilters[group] = el.textContent;
-    applyFilters();
+    selectedPromo = type;
+    document.getElementById('paySection').style.display = price > 0 ? 'block' : 'none';
 }
 
-function openDetail(id) {
-    const l = listings.find(x => x.id === id);
-    if(!l) return;
-    const modal = document.getElementById('detailModal');
-    const mImg = document.getElementById('modal-img');
-    if(l.images[0]) mImg.style.backgroundImage = `url(${l.images[0]})`;
-    else mImg.style.backgroundColor = '#eee';
-    
-    document.getElementById('modal-title').textContent = l.title;
-    document.getElementById('modal-price').textContent = `Rs. ${l.price.toLocaleString()}`;
-    document.getElementById('modal-loc').textContent = `📍 ${l.city}, ${l.district}`;
-    document.getElementById('modal-desc').textContent = l.desc;
-    modal.classList.add('open');
+// ─── MAP & LISTINGS ───
+function initMap() {
+    if (map) return;
+    map = L.map('map').setView([7.8731, 80.7718], 7);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    renderListings();
 }
 
-function closeModal() { document.getElementById('detailModal').classList.remove('open'); }
-
-function showToast(m) {
-    const t = document.getElementById('toast'); t.textContent = m; t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
+function renderListings() {
+    const grid = document.getElementById('browse-grid');
+    grid.innerHTML = listings.map(l => `
+        <div class="prop-card ${l.promo !== 'Free' ? 'featured-card' : ''}">
+            <div class="card-img" style="background-image: url(${l.images[0] || 'https://via.placeholder.com/400x300?text=No+Image'})">
+                ${l.promo !== 'Free' ? `<div class="badge-featured">${l.promo}</div>` : ''}
+            </div>
+            <div class="card-body">
+                <div class="card-price">Rs. ${l.price.toLocaleString()}</div>
+                <div style="font-weight:600; margin:4px 0">${l.title}</div>
+                <div style="font-size:12px; color:var(--muted)">📍 ${l.city}, ${l.district}</div>
+            </div>
+        </div>
+    `).join('');
 }
 
-function resetFilters() {
-    activeFilters = { type:'All', prop:'All', dist:'All', search:'' };
-    applyFilters();
-}
-
-function doHeroSearch() {
-    activeFilters.search = document.getElementById('heroSearch').value;
+function submitAd() {
+    const ad = {
+        id: Date.now(),
+        title: document.getElementById('f-title').value,
+        price: parseInt(document.getElementById('f-price').value),
+        district: document.getElementById('f-dist').value,
+        city: document.getElementById('f-city').value,
+        type: document.getElementById('f-type').value,
+        images: [...currentImages],
+        promo: selectedPromo
+    };
+    listings.unshift(ad);
+    showToast("Ad Posted Successfully!");
     showPage('browse');
 }
 
-// INIT
-renderFeatured();
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Update stats on load
+document.getElementById('stat-ads').textContent = listings.length + "+";
 </script>
 </body>
 </html>
