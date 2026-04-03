@@ -33,7 +33,7 @@ nav {
   padding: 0 28px; height: 64px;
   display: flex; align-items: center; justify-content: space-between;
 }
-.logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900; color: var(--brown); letter-spacing: -0.5px; cursor: pointer; }
+.logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900; color: var(--brown); letter-spacing: -0.5px; }
 .logo span { color: var(--gold); }
 .nav-links { display: flex; gap: 6px; }
 .nav-btn { padding: 8px 18px; border-radius: 8px; border: none; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
@@ -106,7 +106,7 @@ nav {
 
 /* PROMOTION STYLES */
 .featured-card { border: 2.5px solid var(--gold) !important; }
-.badge-featured { position: absolute; top: 12px; right: 12px; background: var(--gold); color: white; padding: 4px 10px; font-size: 10px; font-weight: 800; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.badge-featured { position: absolute; top: 12px; right: 12px; background: var(--gold); color: white; padding: 4px 10px; font-size: 10px; font-weight: 800; border-radius: 6px; text-transform: uppercase; }
 
 /* ── POST AD PAGE ── */
 .post-wrap { max-width: 760px; margin: 0 auto; padding: 40px 20px 80px; }
@@ -127,87 +127,41 @@ input[type=text], input[type=number], input[type=tel], input[type=email], select
 }
 input:focus, select:focus, textarea:focus { border-color: var(--gold); background: #fff; }
 textarea { resize: vertical; min-height: 100px; }
-.type-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.type-opt { padding: 14px 10px; border: 2px solid var(--border); border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.2s; }
-.type-opt:hover { border-color: var(--gold); }
-.type-opt.selected { border-color: var(--gold); background: rgba(201,135,58,0.06); }
-.type-opt .icon { font-size: 28px; display: block; margin-bottom: 6px; }
-.type-opt .label { font-size: 13px; font-weight: 600; color: var(--text); }
 
-/* PROMO SELECTION UI */
+/* PROMO UI */
 .promo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
 .promo-box { border: 2px solid var(--border); border-radius: 14px; padding: 16px; text-align: center; cursor: pointer; transition: 0.2s; }
 .promo-box.selected { border-color: var(--gold); background: rgba(201,135,58,0.05); }
 .promo-box h4 { font-size: 14px; color: var(--brown); margin-bottom: 4px; }
 .promo-box .price { color: var(--gold); font-weight: 700; font-size: 13px; }
-
-/* PAYMENT FORM */
 .payment-area { display: none; margin-top: 24px; padding-top: 24px; border-top: 1px dashed var(--border); }
 
+/* PHOTO UI */
 .photo-drop {
   border: 2px dashed var(--border); border-radius: 14px;
   padding: 32px; text-align: center; cursor: pointer;
   transition: all 0.2s; background: var(--warm);
 }
 .photo-drop:hover { border-color: var(--gold); background: rgba(201,135,58,0.04); }
-.photo-drop .icon { font-size: 36px; margin-bottom: 10px; }
-.photo-drop p { color: var(--muted); font-size: 14px; }
-.photo-drop strong { color: var(--gold); }
 .photo-previews { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
 .photo-thumb { width: 80px; height: 80px; border-radius: 10px; background-size: cover; background-position: center; border: 1px solid var(--border); position: relative; }
 .photo-thumb .remove { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%; background: #e74c3c; color: #fff; border: none; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-/* LANDING PAGE */
-.landing-hero {
-  background: linear-gradient(160deg, #2c1810 0%, #4a2c1a 40%, #2c1810 100%);
-  padding: 90px 28px 80px; text-align: center; position: relative; overflow: hidden;
-}
-.landing-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(36px,6vw,64px); font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 16px; position: relative; }
-.landing-hero h1 em { font-style: normal; color: var(--gold-light); }
-.landing-hero p { color: rgba(255,255,255,0.7); font-size: 17px; max-width: 500px; margin: 0 auto 36px; line-height: 1.7; position: relative; }
-.hero-search {
-  max-width: 600px; margin: 0 auto; position: relative;
-  display: flex; gap: 10px; background: #fff; padding: 8px; border-radius: 14px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.3);
-}
-.hero-search input { flex: 1; border: none; background: transparent; padding: 8px 12px; font-family: 'Outfit', sans-serif; font-size: 15px; color: var(--text); outline: none; }
-.hero-search button { background: var(--gold); color: #fff; border: none; padding: 10px 22px; border-radius: 9px; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; transition: background 0.2s; }
-.landing-cats { padding: 60px 28px; max-width: 1100px; margin: 0 auto; }
-.cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
-.cat-card {
-  background: #fff; border-radius: 16px; padding: 24px 16px;
-  text-align: center; cursor: pointer; transition: all 0.25s;
-  border: 1.5px solid var(--border); box-shadow: var(--shadow);
-}
-.cat-card:hover { transform: translateY(-4px); border-color: var(--gold); }
+.submit-btn { width: 100%; padding: 16px; background: var(--brown); color: #fff; border: none; border-radius: 12px; font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.25s; margin-top: 10px; }
+.submit-btn:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,135,58,0.4); }
 
-/* SUCCESS & MODALS */
-.success-overlay {
-  position: fixed; inset: 0; z-index: 9000;
-  background: rgba(250,247,242,0.95); backdrop-filter: blur(10px);
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; pointer-events: none; transition: opacity 0.4s;
-}
+/* SUCCESS & TOAST */
+.success-overlay { position: fixed; inset: 0; z-index: 9000; background: rgba(250,247,242,0.95); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s; }
 .success-overlay.show { opacity: 1; pointer-events: all; }
 .success-box { text-align: center; max-width: 400px; padding: 20px; }
-.modal-bg { position: fixed; inset: 0; z-index: 800; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-.modal-bg.open { opacity: 1; pointer-events: all; }
-.modal-box { background: #fff; border-radius: 20px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg); }
-
-/* TOAST */
-.toast {
-  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-  background: var(--brown); color: #fff;
-  padding: 14px 20px; border-radius: 12px; font-size: 14px;
-  transform: translateY(100px); opacity: 0; transition: all 0.3s;
-}
+.toast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: var(--brown); color: #fff; padding: 14px 20px; border-radius: 12px; font-size: 14px; transform: translateY(100px); opacity: 0; transition: all 0.3s; }
 .toast.show { transform: translateY(0); opacity: 1; }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo" onclick="showPage('home')">Infinit<span>zy</span></div>
+  <div class="logo">Infinit<span>zy</span></div>
   <div class="nav-links">
     <button class="nav-btn ghost" onclick="showPage('home')">Home</button>
     <button class="nav-btn ghost" onclick="showPage('browse')">Browse Ads</button>
@@ -216,30 +170,11 @@ textarea { resize: vertical; min-height: 100px; }
 </nav>
 
 <div id="page-home" class="page active">
-  <div class="landing-hero">
-    <h1>Find Your Dream<br>Property in <em>Sri Lanka</em></h1>
-    <p>Browse thousands of homes, lands, and commercial spaces — all across the island, powered by local sellers.</p>
-    <div class="hero-search">
-      <input type="text" id="heroSearch" placeholder="Search by city, district or property type…">
-      <button onclick="doHeroSearch()">Search</button>
-    </div>
-    <div class="hero-stats">
-      <div class="h-stat"><div class="h-stat-val" id="listingStatCount">0</div><div class="h-stat-label">Active Listings</div></div>
-      <div class="h-stat"><div class="h-stat-val">25</div><div class="h-stat-label">Districts</div></div>
-      <div class="h-stat"><div class="h-stat-val">100%</div><div class="h-stat-label">Free to Post</div></div>
-    </div>
-  </div>
-
-  <div class="landing-cats">
-    <h2>Browse by Category</h2>
-    <p>Find exactly what you're looking for across Sri Lanka</p>
-    <div class="cat-grid">
-      <div class="cat-card" onclick="filterAndBrowse('House')"><div class="cat-icon">🏠</div><div class="cat-name">Houses</div><div class="cat-count" id="cnt-house">— listings</div></div>
-      <div class="cat-card" onclick="filterAndBrowse('Apartment')"><div class="cat-icon">🏢</div><div class="cat-name">Apartments</div><div class="cat-count" id="cnt-apt">— listings</div></div>
-      <div class="cat-card" onclick="filterAndBrowse('Land')"><div class="cat-icon">🌿</div><div class="cat-name">Land</div><div class="cat-count" id="cnt-land">— listings</div></div>
-      <div class="cat-card" onclick="filterAndBrowse('Villa')"><div class="cat-icon">🏡</div><div class="cat-name">Villas</div><div class="cat-count" id="cnt-villa">— listings</div></div>
-      <div class="cat-card" onclick="filterAndBrowse('Commercial')"><div class="cat-icon">🏪</div><div class="cat-name">Commercial</div><div class="cat-count" id="cnt-comm">— listings</div></div>
-      <div class="cat-card" onclick="filterAndBrowse('Room')"><div class="cat-icon">🛏️</div><div class="cat-name">Rooms</div><div class="cat-count" id="cnt-room">— listings</div></div>
+  <div class="landing-hero" style="background: linear-gradient(160deg, #2c1810 0%, #4a2c1a 40%, #2c1810 100%); padding: 90px 28px 80px; text-align: center; color: white;">
+    <h1>Find Your Dream Property in Sri Lanka</h1>
+    <p>Browse thousands of listings across the island.</p>
+    <div class="hero-stats" style="margin-top: 20px;">
+        <span id="listingStatCount">0</span> Listings Active
     </div>
   </div>
 </div>
@@ -248,29 +183,19 @@ textarea { resize: vertical; min-height: 100px; }
   <div class="browse-layout">
     <div class="sidebar">
       <div class="sidebar-title">🔍 Filter Properties</div>
-      <input type="text" class="search-box" id="browseSearch" placeholder="Search location, title…" oninput="applyFilters()">
+      <input type="text" class="search-box" id="browseSearch" placeholder="Search location..." oninput="applyFilters()">
       <div class="filter-label">Listing Type</div>
-      <div class="filter-chips" id="typeChips">
+      <div class="filter-chips">
         <div class="chip active" onclick="toggleChip(this,'type')">All</div>
         <div class="chip" onclick="toggleChip(this,'type')">For Sale</div>
         <div class="chip" onclick="toggleChip(this,'type')">For Rent</div>
       </div>
-      <div class="filter-label">Property Type</div>
-      <div class="filter-chips" id="propChips">
-        <div class="chip active" onclick="toggleChip(this,'prop')">All</div>
-        <div class="chip" onclick="toggleChip(this,'prop')">House</div>
-        <div class="chip" onclick="toggleChip(this,'prop')">Apartment</div>
-        <div class="chip" onclick="toggleChip(this,'prop')">Land</div>
-      </div>
-      <button class="apply-btn" onclick="resetFilters()">Reset Filters</button>
-      <div class="listing-count" id="listingCount">Showing all listings</div>
+      <button class="apply-btn" onclick="applyFilters()">Apply Filters</button>
+      <div class="listing-count" id="resultCount">0 properties found</div>
     </div>
     <div class="map-side">
       <div class="map-container"><div id="map"></div></div>
       <div class="cards-area">
-        <div class="cards-header">
-          <div class="results-label"><strong id="resultCount">0</strong> properties found</div>
-        </div>
         <div class="cards-grid" id="cardsGrid"></div>
       </div>
     </div>
@@ -279,37 +204,22 @@ textarea { resize: vertical; min-height: 100px; }
 
 <div id="page-post" class="page">
   <div class="post-wrap">
-    <div class="post-hero">
-      <h1>Post Your Property Ad</h1>
-      <p>Free listing — reach thousands of buyers across Sri Lanka</p>
-    </div>
-
-    <div class="form-card">
-      <div class="form-section-title">🏷️ Listing Type</div>
-      <div class="type-selector" id="listingTypeSelect">
-        <div class="type-opt selected" onclick="selectType(this,'For Sale')"><span class="icon">💰</span><span class="label">For Sale</span></div>
-        <div class="type-opt" onclick="selectType(this,'For Rent')"><span class="icon">🔑</span><span class="label">For Rent</span></div>
-        <div class="type-opt" onclick="selectType(this,'Lease')"><span class="icon">📋</span><span class="label">Lease</span></div>
-      </div>
-    </div>
+    <div class="post-hero"><h1>Post Your Property Ad</h1></div>
 
     <div class="form-card">
       <div class="form-section-title">🏠 Property Details</div>
       <div class="form-grid">
-        <div class="form-group full"><label>Ad Title *</label><input type="text" id="f-title" placeholder="e.g. 3BR House in Galle"></div>
-        <div class="form-group"><label>Property Type *</label><select id="f-proptype"><option value="">Select type…</option><option>House</option><option>Apartment</option><option>Land</option><option>Villa</option></select></div>
-        <div class="form-group"><label>Price (LKR) *</label><input type="number" id="f-price" placeholder="e.g. 15000000"></div>
+        <div class="form-group full"><label>Ad Title *</label><input type="text" id="f-title"></div>
+        <div class="form-group"><label>Price (LKR) *</label><input type="number" id="f-price"></div>
         <div class="form-group"><label>District *</label><select id="f-district"><option>Colombo</option><option>Galle</option><option>Kandy</option></select></div>
-        <div class="form-group"><label>City *</label><input type="text" id="f-city" placeholder="e.g. Unawatuna"></div>
-        <div class="form-group full"><label>Description *</label><textarea id="f-desc" placeholder="Describe the property..."></textarea></div>
+        <div class="form-group"><label>City *</label><input type="text" id="f-city"></div>
       </div>
     </div>
 
     <div class="form-card">
       <div class="form-section-title">📷 Photos</div>
       <div class="photo-drop" onclick="document.getElementById('deviceFileInput').click()">
-        <div class="icon">📸</div>
-        <p>Tap to <strong>browse device photos</strong> — up to 10 images</p>
+        <p>Tap to <strong>browse device photos</strong></p>
         <input type="file" id="deviceFileInput" multiple accept="image/*" style="display:none" onchange="handleFileSelect(this.files)">
       </div>
       <div class="photo-previews" id="photoPreviews"></div>
@@ -318,36 +228,18 @@ textarea { resize: vertical; min-height: 100px; }
     <div class="form-card">
       <div class="form-section-title">⭐ Promote Your Ad</div>
       <div class="promo-grid">
-        <div class="promo-box selected" onclick="selectPromo(this, 'Free', 0)">
-          <h4>Free Ad</h4>
-          <div class="price">Rs. 0</div>
-        </div>
-        <div class="promo-box" onclick="selectPromo(this, 'Top Ad', 2500)">
-          <h4>Top Ad</h4>
-          <div class="price">Rs. 2,500</div>
-        </div>
-        <div class="promo-box" onclick="selectPromo(this, 'Featured', 7500)">
-          <h4>Featured</h4>
-          <div class="price">Rs. 7,500</div>
-        </div>
+        <div class="promo-box selected" onclick="selectPromo(this, 'Free', 0)"><h4>Free Ad</h4><div class="price">Rs. 0</div></div>
+        <div class="promo-box" onclick="selectPromo(this, 'Top Ad', 2500)"><h4>Top Ad</h4><div class="price">Rs. 2,500</div></div>
+        <div class="promo-box" onclick="selectPromo(this, 'Featured', 7500)"><h4>Featured</h4><div class="price">Rs. 7,500</div></div>
       </div>
 
       <div class="payment-area" id="paySection">
         <div class="form-section-title" style="font-size:16px;">Secure Card Payment</div>
         <div class="form-grid">
-          <div class="form-group full"><label>Cardholder Name</label><input type="text" placeholder="John Doe"></div>
           <div class="form-group full"><label>Card Number</label><input type="text" placeholder="0000 0000 0000 0000"></div>
-          <div class="form-group"><label>Expiry Date</label><input type="text" placeholder="MM/YY"></div>
+          <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM/YY"></div>
           <div class="form-group"><label>CVC</label><input type="password" placeholder="***"></div>
         </div>
-      </div>
-    </div>
-
-    <div class="form-card">
-      <div class="form-section-title">📞 Contact Details</div>
-      <div class="form-grid">
-        <div class="form-group"><label>Your Name *</label><input type="text" id="f-name"></div>
-        <div class="form-group"><label>Phone Number *</label><input type="tel" id="f-phone"></div>
       </div>
     </div>
 
@@ -356,12 +248,7 @@ textarea { resize: vertical; min-height: 100px; }
 </div>
 
 <div class="success-overlay" id="successOverlay">
-  <div class="success-box">
-    <div class="big-icon">🎉</div>
-    <h2>Ad Published!</h2>
-    <p>Your property ad is now live on Infinitzy.</p>
-    <button class="nav-btn primary" onclick="hideSuccess();showPage('browse')">View Listings</button>
-  </div>
+    <div class="success-box"><h2>🎉 Ad Published!</h2><button class="nav-btn primary" onclick="showPage('browse')">View Ads</button></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -369,7 +256,7 @@ textarea { resize: vertical; min-height: 100px; }
 <script>
 let listings = [];
 let currentImages = [];
-let activeFilters = { type:'All', prop:'All', search:'' };
+let activeFilters = { type:'All', search:'' };
 let promoType = 'Free';
 let map;
 
@@ -377,13 +264,10 @@ function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   if (id === 'browse') { setTimeout(initMap, 100); applyFilters(); }
-  window.scrollTo(0,0);
 }
 
-// ── PHOTO LOGIC ──
 function handleFileSelect(files) {
     Array.from(files).forEach(file => {
-        if (currentImages.length >= 10) return;
         const reader = new FileReader();
         reader.onload = (e) => {
             currentImages.push(e.target.result);
@@ -394,20 +278,12 @@ function handleFileSelect(files) {
 }
 
 function renderPreviews() {
-    const div = document.getElementById('photoPreviews');
-    div.innerHTML = currentImages.map((src, i) => `
+    document.getElementById('photoPreviews').innerHTML = currentImages.map((src, i) => `
         <div class="photo-thumb" style="background-image:url(${src})">
-            <button class="remove" onclick="removeImg(${i})">✕</button>
-        </div>
-    `).join('');
+            <button class="remove" onclick="currentImages.splice(${i},1);renderPreviews()">✕</button>
+        </div>`).join('');
 }
 
-function removeImg(i) {
-    currentImages.splice(i, 1);
-    renderPreviews();
-}
-
-// ── PROMO LOGIC ──
 function selectPromo(el, type, price) {
     document.querySelectorAll('.promo-box').forEach(b => b.classList.remove('selected'));
     el.classList.add('selected');
@@ -415,7 +291,6 @@ function selectPromo(el, type, price) {
     document.getElementById('paySection').style.display = price > 0 ? 'block' : 'none';
 }
 
-// ── LISTING LOGIC ──
 function initMap() {
     if (map) return;
     map = L.map('map').setView([7.8731, 80.7718], 7);
@@ -425,84 +300,40 @@ function initMap() {
 function applyFilters() {
     const filtered = listings.filter(l => {
         if (activeFilters.type !== 'All' && l.type !== activeFilters.type) return false;
-        if (activeFilters.prop !== 'All' && l.propType !== activeFilters.prop) return false;
-        if (activeFilters.search && !l.title.toLowerCase().includes(activeFilters.search)) return false;
         return true;
-    });
+    }).sort((a,b) => (b.promo === 'Featured') - (a.promo === 'Featured'));
 
-    // Sort: Featured first
-    filtered.sort((a,b) => (b.promo === 'Featured') - (a.promo === 'Featured'));
-
-    const grid = document.getElementById('cardsGrid');
-    grid.innerHTML = filtered.map(l => `
+    document.getElementById('cardsGrid').innerHTML = filtered.map(l => `
         <div class="prop-card ${l.promo === 'Featured' ? 'featured-card' : ''}">
             <div class="card-img" style="background-image: url(${l.images[0] || ''})">
-                ${!l.images[0] ? '🏠' : ''}
-                <div class="card-badge ${l.type === 'For Sale' ? 'badge-sale' : 'badge-rent'}">${l.type}</div>
                 ${l.promo !== 'Free' ? `<div class="badge-featured">${l.promo}</div>` : ''}
             </div>
             <div class="card-body">
                 <div class="card-price">Rs. ${l.price.toLocaleString()}</div>
                 <div class="card-title">${l.title}</div>
-                <div class="card-loc">📍 ${l.city}, ${l.district}</div>
             </div>
-        </div>
-    `).join('');
-    document.getElementById('resultCount').textContent = filtered.length;
+        </div>`).join('');
+    document.getElementById('resultCount').textContent = filtered.length + " properties found";
 }
 
 function submitAd() {
     const ad = {
-        id: Date.now(),
         title: document.getElementById('f-title').value,
         price: parseInt(document.getElementById('f-price').value),
-        district: document.getElementById('f-district').value,
-        city: document.getElementById('f-city').value,
-        propType: document.getElementById('f-proptype').value,
-        type: 'For Sale', // Simplified for demo
         images: [...currentImages],
-        promo: promoType
+        promo: promoType,
+        type: 'For Sale'
     };
     listings.unshift(ad);
-    updateHomeCounts();
     document.getElementById('successOverlay').classList.add('show');
+    document.getElementById('listingStatCount').textContent = listings.length;
 }
 
 function toggleChip(el, group) {
     el.closest('.filter-chips').querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
     el.classList.add('active');
     activeFilters[group] = el.textContent;
-    applyFilters();
 }
-
-function doHeroSearch() {
-    activeFilters.search = document.getElementById('heroSearch').value.toLowerCase();
-    showPage('browse');
-}
-
-function filterAndBrowse(type) {
-    activeFilters.prop = type;
-    showPage('browse');
-}
-
-function updateHomeCounts() {
-    document.getElementById('listingStatCount').textContent = listings.length;
-    const types = ['House','Apartment','Land','Villa','Commercial','Room'];
-    types.forEach(t => {
-        const c = listings.filter(l => l.propType === t).length;
-        const el = document.getElementById('cnt-'+t.toLowerCase().substring(0,4));
-        if(el) el.textContent = c + ' listings';
-    });
-}
-
-function hideSuccess() { document.getElementById('successOverlay').classList.remove('show'); }
-
-function showToast(m) {
-    const t = document.getElementById('toast'); t.textContent = m; t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
-}
-
-updateHomeCounts();
 </script>
 </body>
 </html>
