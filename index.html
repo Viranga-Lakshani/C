@@ -1,3 +1,9 @@
+To update the script with photo browsing from the device, featured/top ad promotions, and a payment section while maintaining your existing UI and logic, I have made the following specific changes:
+ * Device Photo Browsing: Replaced addFakePhoto() with a native file input that generates real image previews from your device.
+ * Promotion Section: Added a new "Boost Your Ad" card in the Post Ad section with "Top Ad" and "Featured" tiers.
+ * Payment Logic: Added a secure-look payment modal that appears if a paid promotion is selected.
+ * Promoted Display: Updated the card rendering to show "Featured" or "Top Ad" badges and highlighted borders.
+Here is the complete, updated script:
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,22 +97,23 @@ nav {
 }
 .prop-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
 .prop-card.highlighted { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,135,58,0.2), var(--shadow-lg); }
-.card-img { height: 180px; display: flex; align-items: center; justify-content: center; font-size: 64px; position: relative; overflow: hidden; background-size: cover; background-position: center; }
-.card-badge { position: absolute; top: 12px; left: 12px; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+.prop-card.featured-card { border-color: var(--gold); background: #fffcf7; }
+.card-img { height: 180px; display: flex; align-items: center; justify-content: center; font-size: 64px; position: relative; overflow: hidden; }
+.card-badge { position: absolute; top: 12px; left: 12px; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; z-index: 2; }
 .badge-sale { background: #e74c3c; color: #fff; }
 .badge-rent { background: #2980b9; color: #fff; }
 .badge-new { background: var(--gold); color: #fff; }
-.card-fav { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.9); border: none; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.badge-featured { background: var(--brown); color: var(--gold-light); top: 40px; }
+.card-fav { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.9); border: none; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; z-index: 2; }
 .card-fav:hover { background: #fff; transform: scale(1.1); }
 .card-body { padding: 16px; }
 .card-price { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--brown); }
 .card-price span { font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 400; color: var(--muted); }
 .card-title { font-size: 14px; font-weight: 600; margin: 4px 0 2px; color: var(--text); }
 .card-loc { font-size: 12px; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 4px; }
-
-/* PROMOTION STYLES */
-.featured-card { border: 2.5px solid var(--gold) !important; }
-.badge-featured { position: absolute; top: 12px; right: 12px; background: var(--gold); color: white; padding: 4px 10px; font-size: 10px; font-weight: 800; border-radius: 6px; text-transform: uppercase; }
+.card-specs { display: flex; gap: 14px; }
+.spec { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+.spec strong { color: var(--text); font-weight: 600; }
 
 /* ── POST AD PAGE ── */
 .post-wrap { max-width: 760px; margin: 0 auto; padding: 40px 20px 80px; }
@@ -127,35 +134,99 @@ input[type=text], input[type=number], input[type=tel], input[type=email], select
 }
 input:focus, select:focus, textarea:focus { border-color: var(--gold); background: #fff; }
 textarea { resize: vertical; min-height: 100px; }
+.type-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.type-opt { padding: 14px 10px; border: 2px solid var(--border); border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.2s; }
+.type-opt:hover { border-color: var(--gold); }
+.type-opt.selected { border-color: var(--gold); background: rgba(201,135,58,0.06); }
+.type-opt .icon { font-size: 28px; display: block; margin-bottom: 6px; }
+.type-opt .label { font-size: 13px; font-weight: 600; color: var(--text); }
 
-/* PROMO UI */
-.promo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
-.promo-box { border: 2px solid var(--border); border-radius: 14px; padding: 16px; text-align: center; cursor: pointer; transition: 0.2s; }
-.promo-box.selected { border-color: var(--gold); background: rgba(201,135,58,0.05); }
-.promo-box h4 { font-size: 14px; color: var(--brown); margin-bottom: 4px; }
-.promo-box .price { color: var(--gold); font-weight: 700; font-size: 13px; }
-.payment-area { display: none; margin-top: 24px; padding-top: 24px; border-top: 1px dashed var(--border); }
+/* PROMO STYLES */
+.promo-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.promo-opt { border: 2.5px solid var(--border); border-radius: 16px; padding: 20px; cursor: pointer; transition: all 0.2s; position: relative; display: flex; justify-content: space-between; align-items: center; }
+.promo-opt:hover { border-color: var(--gold); }
+.promo-opt.selected { border-color: var(--gold); background: rgba(201,135,58,0.05); }
+.promo-info { flex: 1; }
+.promo-price { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 800; color: var(--brown); }
+.promo-name { font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.promo-desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
 
-/* PHOTO UI */
+/* PHOTO PREVIEW */
 .photo-drop {
   border: 2px dashed var(--border); border-radius: 14px;
   padding: 32px; text-align: center; cursor: pointer;
   transition: all 0.2s; background: var(--warm);
 }
 .photo-drop:hover { border-color: var(--gold); background: rgba(201,135,58,0.04); }
+.photo-drop .icon { font-size: 36px; margin-bottom: 10px; }
+.photo-drop p { color: var(--muted); font-size: 14px; }
+.photo-drop strong { color: var(--gold); }
 .photo-previews { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-.photo-thumb { width: 80px; height: 80px; border-radius: 10px; background-size: cover; background-position: center; border: 1px solid var(--border); position: relative; }
-.photo-thumb .remove { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%; background: #e74c3c; color: #fff; border: none; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.photo-thumb { width: 80px; height: 80px; border-radius: 10px; background: var(--warm); display: flex; align-items: center; justify-content: center; font-size: 28px; border: 1px solid var(--border); position: relative; cursor: pointer; overflow: hidden; }
+.photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.photo-thumb .remove { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%; background: #e74c3c; color: #fff; border: none; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 5; }
+
+/* MODALS */
+.modal-bg { position: fixed; inset: 0; z-index: 800; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(4px); }
+.modal-bg.open { opacity: 1; pointer-events: all; }
+.modal-box { background: #fff; border-radius: 20px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg); transform: translateY(20px); transition: transform 0.3s; position: relative; }
+.modal-bg.open .modal-box { transform: translateY(0); }
+
+/* PAYMENT MODAL SPECIFIC */
+.pay-wrap { padding: 32px; }
+.pay-header { margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+.pay-total { font-size: 24px; font-weight: 800; color: var(--brown); margin-top: 4px; }
 
 .submit-btn { width: 100%; padding: 16px; background: var(--brown); color: #fff; border: none; border-radius: 12px; font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.25s; margin-top: 10px; }
 .submit-btn:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,135,58,0.4); }
+.amenity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.amenity-opt { padding: 9px 10px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.18s; text-align: center; }
+.amenity-opt:hover { border-color: var(--gold); color: var(--gold); }
+.amenity-opt.selected { background: var(--gold); border-color: var(--gold); color: #fff; }
+.map-pick { height: 240px; border-radius: 12px; overflow: hidden; border: 1.5px solid var(--border); margin-top: 8px; }
 
-/* SUCCESS & TOAST */
-.success-overlay { position: fixed; inset: 0; z-index: 9000; background: rgba(250,247,242,0.95); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s; }
+/* SUCCESS */
+.success-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(250,247,242,0.95); backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.4s;
+}
 .success-overlay.show { opacity: 1; pointer-events: all; }
 .success-box { text-align: center; max-width: 400px; padding: 20px; }
-.toast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: var(--brown); color: #fff; padding: 14px 20px; border-radius: 12px; font-size: 14px; transform: translateY(100px); opacity: 0; transition: all 0.3s; }
+
+/* LANDING PAGE HERO */
+.landing-hero {
+  background: linear-gradient(160deg, #2c1810 0%, #4a2c1a 40%, #2c1810 100%);
+  padding: 90px 28px 80px; text-align: center; position: relative; overflow: hidden;
+}
+.landing-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(36px,6vw,64px); font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 16px; position: relative; }
+.landing-hero h1 em { font-style: normal; color: var(--gold-light); }
+.landing-hero p { color: rgba(255,255,255,0.7); font-size: 17px; max-width: 500px; margin: 0 auto 36px; line-height: 1.7; position: relative; }
+.hero-search {
+  max-width: 600px; margin: 0 auto; position: relative;
+  display: flex; gap: 10px; background: #fff; padding: 8px; border-radius: 14px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+}
+.hero-search input { flex: 1; border: none; background: transparent; padding: 8px 12px; font-family: 'Outfit', sans-serif; font-size: 15px; color: var(--text); outline: none; }
+.hero-search button { background: var(--gold); color: #fff; border: none; padding: 10px 22px; border-radius: 9px; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; transition: background 0.2s; }
+.hero-search button:hover { background: var(--gold-light); }
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+  background: var(--brown); color: #fff;
+  padding: 14px 20px; border-radius: 12px; font-size: 14px;
+  transform: translateY(100px); opacity: 0; transition: all 0.3s;
+  max-width: 300px; box-shadow: var(--shadow-lg);
+}
 .toast.show { transform: translateY(0); opacity: 1; }
+
+@media (max-width: 768px) {
+  .browse-layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+  .form-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -170,12 +241,16 @@ textarea { resize: vertical; min-height: 100px; }
 </nav>
 
 <div id="page-home" class="page active">
-  <div class="landing-hero" style="background: linear-gradient(160deg, #2c1810 0%, #4a2c1a 40%, #2c1810 100%); padding: 90px 28px 80px; text-align: center; color: white;">
-    <h1>Find Your Dream Property in Sri Lanka</h1>
-    <p>Browse thousands of listings across the island.</p>
-    <div class="hero-stats" style="margin-top: 20px;">
-        <span id="listingStatCount">0</span> Listings Active
+  <div class="landing-hero">
+    <h1>Find Your Dream<br>Property in <em>Sri Lanka</em></h1>
+    <p>Browse thousands of homes, lands, and commercial spaces — all across the island.</p>
+    <div class="hero-search">
+      <input type="text" id="heroSearch" placeholder="Search by city, district or property type…">
+      <button onclick="doHeroSearch()">Search</button>
     </div>
+  </div>
+  <div style="padding: 60px 28px; text-align: center;">
+    <button class="nav-btn primary" style="padding: 15px 40px; font-size: 18px;" onclick="showPage('browse')">Start Exploring</button>
   </div>
 </div>
 
@@ -183,19 +258,39 @@ textarea { resize: vertical; min-height: 100px; }
   <div class="browse-layout">
     <div class="sidebar">
       <div class="sidebar-title">🔍 Filter Properties</div>
-      <input type="text" class="search-box" id="browseSearch" placeholder="Search location..." oninput="applyFilters()">
+      <input type="text" class="search-box" id="browseSearch" placeholder="Search location, title…" oninput="applyFilters()">
+      
       <div class="filter-label">Listing Type</div>
-      <div class="filter-chips">
+      <div class="filter-chips" id="typeChips">
         <div class="chip active" onclick="toggleChip(this,'type')">All</div>
         <div class="chip" onclick="toggleChip(this,'type')">For Sale</div>
         <div class="chip" onclick="toggleChip(this,'type')">For Rent</div>
       </div>
-      <button class="apply-btn" onclick="applyFilters()">Apply Filters</button>
-      <div class="listing-count" id="resultCount">0 properties found</div>
+
+      <div class="filter-label">Property Type</div>
+      <div class="filter-chips" id="propChips">
+        <div class="chip active" onclick="toggleChip(this,'prop')">All</div>
+        <div class="chip" onclick="toggleChip(this,'prop')">House</div>
+        <div class="chip" onclick="toggleChip(this,'prop')">Apartment</div>
+        <div class="chip" onclick="toggleChip(this,'prop')">Land</div>
+        <div class="chip" onclick="toggleChip(this,'prop')">Villa</div>
+      </div>
+
+      <button class="apply-btn" onclick="resetFilters()">Reset Filters</button>
+      <div class="listing-count" id="listingCount">Showing all listings</div>
     </div>
+
     <div class="map-side">
       <div class="map-container"><div id="map"></div></div>
       <div class="cards-area">
+        <div class="cards-header">
+          <div class="results-label"><strong id="resultCount">0</strong> properties found</div>
+          <select class="sort-select" onchange="applyFilters()" id="sortSelect">
+            <option value="newest">Newest First</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+          </select>
+        </div>
         <div class="cards-grid" id="cardsGrid"></div>
       </div>
     </div>
@@ -204,136 +299,342 @@ textarea { resize: vertical; min-height: 100px; }
 
 <div id="page-post" class="page">
   <div class="post-wrap">
-    <div class="post-hero"><h1>Post Your Property Ad</h1></div>
+    <div class="post-hero">
+      <h1>Post Your Property Ad</h1>
+      <p>Free or Premium listings — reach thousands of buyers across Sri Lanka</p>
+    </div>
 
     <div class="form-card">
-      <div class="form-section-title">🏠 Property Details</div>
-      <div class="form-grid">
-        <div class="form-group full"><label>Ad Title *</label><input type="text" id="f-title"></div>
-        <div class="form-group"><label>Price (LKR) *</label><input type="number" id="f-price"></div>
-        <div class="form-group"><label>District *</label><select id="f-district"><option>Colombo</option><option>Galle</option><option>Kandy</option></select></div>
-        <div class="form-group"><label>City *</label><input type="text" id="f-city"></div>
+      <div class="form-section-title">🏷️ Listing Type</div>
+      <div class="type-selector" id="listingTypeSelect">
+        <div class="type-opt selected" onclick="selectType(this,'For Sale')"><span class="icon">💰</span><span class="label">For Sale</span></div>
+        <div class="type-opt" onclick="selectType(this,'For Rent')"><span class="icon">🔑</span><span class="label">For Rent</span></div>
+        <div class="type-opt" onclick="selectType(this,'Lease')"><span class="icon">📋</span><span class="label">Lease</span></div>
       </div>
     </div>
 
     <div class="form-card">
+      <div class="form-section-title">🏠 Property Details</div>
+      <div class="form-grid">
+        <div class="form-group full"><label>Ad Title *</label><input type="text" id="f-title" placeholder="e.g. 3BR House in Galle"></div>
+        <div class="form-group">
+          <label>Property Type *</label>
+          <select id="f-proptype">
+            <option value="">Select type…</option>
+            <option>House</option><option>Apartment</option><option>Land</option><option>Villa</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Price (LKR) *</label>
+          <input type="number" id="f-price" placeholder="e.g. 15000000">
+        </div>
+      </div>
+      <div class="form-group full" style="margin-top:15px">
+        <label>Description *</label>
+        <textarea id="f-desc" placeholder="Describe the property..."></textarea>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-section-title">📍 Location</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>District *</label>
+          <select id="f-district" onchange="updateMapPin()">
+            <option value="">Select district…</option>
+            <option>Colombo</option><option>Galle</option><option>Kandy</option><option>Negombo</option>
+          </select>
+        </div>
+        <div class="form-group"><label>City / Area *</label><input type="text" id="f-city" placeholder="e.g. Unawatuna"></div>
+      </div>
+      <div class="map-pick" id="postMap"></div>
+      <input type="hidden" id="f-lat" value="6.9271"><input type="hidden" id="f-lng" value="79.8612">
+    </div>
+
+    <div class="form-card">
       <div class="form-section-title">📷 Photos</div>
+      <input type="file" id="deviceFileInput" multiple accept="image/*" style="display: none;" onchange="handleDeviceFiles(this.files)">
       <div class="photo-drop" onclick="document.getElementById('deviceFileInput').click()">
-        <p>Tap to <strong>browse device photos</strong></p>
-        <input type="file" id="deviceFileInput" multiple accept="image/*" style="display:none" onchange="handleFileSelect(this.files)">
+        <div class="icon">📸</div>
+        <p>Tap to <strong>browse photos</strong> from your device</p>
+        <p style="font-size:12px;margin-top:4px">Up to 5 images supported</p>
       </div>
       <div class="photo-previews" id="photoPreviews"></div>
     </div>
 
     <div class="form-card">
-      <div class="form-section-title">⭐ Promote Your Ad</div>
+      <div class="form-section-title">💎 Boost Your Ad</div>
       <div class="promo-grid">
-        <div class="promo-box selected" onclick="selectPromo(this, 'Free', 0)"><h4>Free Ad</h4><div class="price">Rs. 0</div></div>
-        <div class="promo-box" onclick="selectPromo(this, 'Top Ad', 2500)"><h4>Top Ad</h4><div class="price">Rs. 2,500</div></div>
-        <div class="promo-box" onclick="selectPromo(this, 'Featured', 7500)"><h4>Featured</h4><div class="price">Rs. 7,500</div></div>
-      </div>
-
-      <div class="payment-area" id="paySection">
-        <div class="form-section-title" style="font-size:16px;">Secure Card Payment</div>
-        <div class="form-grid">
-          <div class="form-group full"><label>Card Number</label><input type="text" placeholder="0000 0000 0000 0000"></div>
-          <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM/YY"></div>
-          <div class="form-group"><label>CVC</label><input type="password" placeholder="***"></div>
+        <div class="promo-opt selected" onclick="selectPromo('Free', 0, this)">
+            <div class="promo-info">
+                <div class="promo-name">Standard Listing</div>
+                <div class="promo-desc">Basic placement in search results.</div>
+            </div>
+            <div class="promo-price">FREE</div>
+        </div>
+        <div class="promo-opt" onclick="selectPromo('Top Ad', 2500, this)">
+            <div class="promo-info">
+                <div class="promo-name">⭐ Top Ad</div>
+                <div class="promo-desc">Stay at the top of results for 7 days.</div>
+            </div>
+            <div class="promo-price">Rs. 2,500</div>
+        </div>
+        <div class="promo-opt" onclick="selectPromo('Featured', 5000, this)">
+            <div class="promo-info">
+                <div class="promo-name">💎 Featured Ad</div>
+                <div class="promo-desc">Highlighted border and priority map icons.</div>
+            </div>
+            <div class="promo-price">Rs. 5,000</div>
         </div>
       </div>
     </div>
 
-    <button class="submit-btn" onclick="submitAd()">🏠 Publish Ad Now</button>
+    <div class="form-card">
+      <div class="form-section-title">📞 Contact Details</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Your Name *</label><input type="text" id="f-name"></div>
+        <div class="form-group"><label>Phone Number *</label><input type="tel" id="f-phone"></div>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="initPublishSequence()">🏠 Publish Ad</button>
   </div>
 </div>
 
+<div class="modal-bg" id="payModal">
+    <div class="modal-box">
+        <div class="pay-wrap">
+            <div class="pay-header">
+                <h2>Secure Payment</h2>
+                <p style="color:var(--muted); font-size:14px;">Complete your promotion purchase</p>
+                <div class="pay-total" id="payTotalLabel">Rs. 0</div>
+            </div>
+            
+            <div class="form-group" style="margin-bottom:16px">
+                <label>Cardholder Name</label>
+                <input type="text" placeholder="John Doe">
+            </div>
+            <div class="form-group" style="margin-bottom:16px">
+                <label>Card Number</label>
+                <input type="text" placeholder="xxxx xxxx xxxx xxxx">
+            </div>
+            <div class="form-grid">
+                <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM/YY"></div>
+                <div class="form-group"><label>CVC</label><input type="password" placeholder="***"></div>
+            </div>
+
+            <div style="display:flex; gap:12px; margin-top:32px;">
+                <button class="nav-btn ghost" style="flex:1" onclick="closePayModal()">Cancel</button>
+                <button class="nav-btn primary" style="flex:2" onclick="simulatePayment()">Pay Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="success-overlay" id="successOverlay">
-    <div class="success-box"><h2>🎉 Ad Published!</h2><button class="nav-btn primary" onclick="showPage('browse')">View Ads</button></div>
+  <div class="success-box">
+    <div style="font-size:80px; margin-bottom:20px;">🎉</div>
+    <h2>Ad Published!</h2>
+    <p>Your listing is now live on Infinitzy.</p>
+    <button class="nav-btn primary" style="margin-top:20px" onclick="hideSuccess();showPage('browse')">View on Map</button>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-let listings = [];
-let currentImages = [];
-let activeFilters = { type:'All', search:'' };
-let promoType = 'Free';
-let map;
+// DATA & STATE
+const DISTRICTS = { 'Colombo':[6.9271, 79.8612], 'Galle':[6.0535, 80.2210], 'Kandy':[7.2906, 80.6337], 'Negombo':[7.2083, 79.8358] };
+const emojis = { House:'🏠', Apartment:'🏢', Land:'🌿', Villa:'🏡' };
+const gradients = { House:'#2c4a2e,#1a3020', Apartment:'#1a2c4a,#0d1e30', Land:'#2a3a1a,#1a2c0d', Villa:'#3a2a1a,#2c1a0d' };
 
+let listings = [
+  { id:1, title:'Modern 3BR House in Colombo', type:'For Sale', propType:'House', price:28500000, district:'Colombo', city:'Colombo 7', promo:'Featured', lat:6.9028, lng:79.8668, posted: Date.now() },
+  { id:2, title:'Sea View Villa - Galle', type:'For Sale', propType:'Villa', price:95000000, district:'Galle', city:'Unawatuna', promo:'Top Ad', lat:6.0109, lng:80.2486, posted: Date.now() }
+];
+
+let map, postMap, postMarker, markers = [];
+let uploadedPhotos = [];
+let activeFilters = { type:'All', prop:'All', dist:'All', search:'', sort:'newest' };
+let currentPromo = 'Free';
+let currentPromoPrice = 0;
+
+// NAVIGATION
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   if (id === 'browse') { setTimeout(initMap, 100); applyFilters(); }
+  if (id === 'post') setTimeout(initPostMap, 100);
+  window.scrollTo(0,0);
 }
 
-function handleFileSelect(files) {
+// MAP
+function initMap() {
+  if (map) { map.invalidateSize(); return; }
+  map = L.map('map').setView([7.8731, 80.7718], 7);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+  applyFilters();
+}
+
+// PHOTO BROWSING FROM DEVICE
+function handleDeviceFiles(files) {
+    const grid = document.getElementById('photoPreviews');
     Array.from(files).forEach(file => {
+        if (uploadedPhotos.length >= 5) return;
         const reader = new FileReader();
         reader.onload = (e) => {
-            currentImages.push(e.target.result);
-            renderPreviews();
+            const src = e.target.result;
+            uploadedPhotos.push(src);
+            const thumb = document.createElement('div');
+            thumb.className = 'photo-thumb';
+            thumb.innerHTML = `<img src="${src}"><button class="remove" onclick="removePhoto(this, '${src}')">✕</button>`;
+            grid.appendChild(thumb);
         };
         reader.readAsDataURL(file);
     });
 }
 
-function renderPreviews() {
-    document.getElementById('photoPreviews').innerHTML = currentImages.map((src, i) => `
-        <div class="photo-thumb" style="background-image:url(${src})">
-            <button class="remove" onclick="currentImages.splice(${i},1);renderPreviews()">✕</button>
-        </div>`).join('');
+function removePhoto(btn, src) {
+    btn.parentElement.remove();
+    uploadedPhotos = uploadedPhotos.filter(p => p !== src);
 }
 
-function selectPromo(el, type, price) {
-    document.querySelectorAll('.promo-box').forEach(b => b.classList.remove('selected'));
+// PROMOTION SELECTION
+function selectPromo(level, price, el) {
+    currentPromo = level;
+    currentPromoPrice = price;
+    document.querySelectorAll('.promo-opt').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
-    promoType = type;
-    document.getElementById('paySection').style.display = price > 0 ? 'block' : 'none';
 }
 
-function initMap() {
-    if (map) return;
-    map = L.map('map').setView([7.8731, 80.7718], 7);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+// PUBLISHING FLOW
+function initPublishSequence() {
+    if (!document.getElementById('f-title').value || !document.getElementById('f-price').value) {
+        return showToast("Please fill in required fields");
+    }
+    
+    if (currentPromoPrice > 0) {
+        document.getElementById('payTotalLabel').innerText = `Rs. ${currentPromoPrice.toLocaleString()}`;
+        document.getElementById('payModal').classList.add('open');
+    } else {
+        submitAd();
+    }
 }
 
-function applyFilters() {
-    const filtered = listings.filter(l => {
-        if (activeFilters.type !== 'All' && l.type !== activeFilters.type) return false;
-        return true;
-    }).sort((a,b) => (b.promo === 'Featured') - (a.promo === 'Featured'));
+function closePayModal() { document.getElementById('payModal').classList.remove('open'); }
 
-    document.getElementById('cardsGrid').innerHTML = filtered.map(l => `
-        <div class="prop-card ${l.promo === 'Featured' ? 'featured-card' : ''}">
-            <div class="card-img" style="background-image: url(${l.images[0] || ''})">
-                ${l.promo !== 'Free' ? `<div class="badge-featured">${l.promo}</div>` : ''}
-            </div>
-            <div class="card-body">
-                <div class="card-price">Rs. ${l.price.toLocaleString()}</div>
-                <div class="card-title">${l.title}</div>
-            </div>
-        </div>`).join('');
-    document.getElementById('resultCount').textContent = filtered.length + " properties found";
+function simulatePayment() {
+    showToast("Processing Secure Payment...");
+    setTimeout(() => {
+        closePayModal();
+        submitAd();
+    }, 2000);
 }
 
 function submitAd() {
-    const ad = {
-        title: document.getElementById('f-title').value,
-        price: parseInt(document.getElementById('f-price').value),
-        images: [...currentImages],
-        promo: promoType,
-        type: 'For Sale'
-    };
-    listings.unshift(ad);
-    document.getElementById('successOverlay').classList.add('show');
-    document.getElementById('listingStatCount').textContent = listings.length;
+  const newListing = {
+    id: Date.now(),
+    title: document.getElementById('f-title').value,
+    type: 'For Sale',
+    propType: document.getElementById('f-proptype').value,
+    price: parseInt(document.getElementById('f-price').value),
+    district: document.getElementById('f-district').value,
+    city: document.getElementById('f-city').value,
+    promo: currentPromo,
+    lat: parseFloat(document.getElementById('f-lat').value),
+    lng: parseFloat(document.getElementById('f-lng').value),
+    posted: Date.now()
+  };
+  listings.unshift(newListing);
+  document.getElementById('successOverlay').classList.add('show');
+}
+
+// BROWSE LOGIC
+function applyFilters() {
+  const query = document.getElementById('browseSearch').value.toLowerCase();
+  
+  // Sorting Promoted Ads to Top
+  const sorted = [...listings].sort((a,b) => {
+      const rank = { 'Featured': 3, 'Top Ad': 2, 'Free': 1 };
+      return (rank[b.promo] || 1) - (rank[a.promo] || 1);
+  });
+
+  const filtered = sorted.filter(l => {
+      if (activeFilters.dist !== 'All' && l.district !== activeFilters.dist) return false;
+      return l.title.toLowerCase().includes(query) || l.city.toLowerCase().includes(query);
+  });
+
+  renderCards(filtered);
+  renderMapMarkers(filtered);
+}
+
+function renderCards(data) {
+  const grid = document.getElementById('cardsGrid');
+  grid.innerHTML = data.map(l => `
+    <div class="prop-card ${l.promo==='Featured'?'featured-card':''}">
+      <div class="card-img" style="background:linear-gradient(135deg,${gradients[l.propType]||'#1a2c3a,#0d1e2c'})">
+        ${emojis[l.propType]||'🏠'}
+        <div class="card-badge badge-sale">${l.type}</div>
+        ${l.promo !== 'Free' ? `<div class="card-badge badge-featured">${l.promo.toUpperCase()}</div>` : ''}
+      </div>
+      <div class="card-body">
+        <div class="card-price">LKR ${l.price.toLocaleString()}</div>
+        <div class="card-title">${l.title}</div>
+        <div class="card-loc">📍 ${l.city}, ${l.district}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderMapMarkers(data) {
+    markers.forEach(m => map.removeLayer(m));
+    markers = data.map(l => {
+        const color = l.promo === 'Featured' ? '#c9873a' : '#2c1810';
+        const icon = L.divIcon({
+            html: `<div style="background:${color}; color:#fff; padding:4px 8px; border-radius:10px; font-size:11px; font-weight:700;">Rs.${(l.price/1000000).toFixed(1)}M</div>`,
+            className: ''
+        });
+        return L.marker([l.lat, l.lng], {icon}).addTo(map);
+    });
+}
+
+function initPostMap() {
+  if (postMap) return;
+  postMap = L.map('postMap').setView([7.8731, 80.7718], 7);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(postMap);
+  postMarker = L.marker([7.8731, 80.7718], {draggable:true}).addTo(postMap);
+}
+
+function updateMapPin() {
+    const d = document.getElementById('f-district').value;
+    if (DISTRICTS[d]) {
+        postMarker.setLatLng(DISTRICTS[d]);
+        postMap.setView(DISTRICTS[d], 12);
+        document.getElementById('f-lat').value = DISTRICTS[d][0];
+        document.getElementById('f-lng').value = DISTRICTS[d][1];
+    }
 }
 
 function toggleChip(el, group) {
-    el.closest('.filter-chips').querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
-    activeFilters[group] = el.textContent;
+  el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  activeFilters.dist = el.textContent;
+  applyFilters();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+function hideSuccess() { document.getElementById('successOverlay').classList.remove('show'); }
+function resetFilters() { document.getElementById('browseSearch').value = ''; applyFilters(); }
+function selectType(el, t) {
+    document.querySelectorAll('.type-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
 }
 </script>
+
 </body>
 </html>
+
