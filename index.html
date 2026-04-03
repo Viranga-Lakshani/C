@@ -3,296 +3,279 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Infinitzy — Sri Lanka Real Estate</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Infinitzy — Sri Lanka's Premium Property Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 :root {
-  /* DISTINGUISHED COLORS MATCHING THE LOGO */
-  --primary-navy: #0f172a;
-  --accent-blue: #2563eb;
-  --accent-soft: #dbeafe;
-  --bg-main: #f8fafc;
+  --cream: #faf7f2;
+  --warm: #f5efe6;
+  --brown: #2c1810;
+  --gold: #c9873a;
+  --gold-light: #e8a855;
+  --text: #1a1208;
+  --muted: #7a6a5a;
+  --border: rgba(44,24,16,0.1);
   --surface: #ffffff;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --border: #e2e8f0;
-  --shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 12px 40px rgba(15, 23, 42, 0.12);
+  --shadow: 0 4px 20px rgba(44,24,16,0.06);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Outfit', sans-serif; background: var(--bg-main); color: var(--text-main); min-height: 100vh; }
+body { font-family: 'Outfit', sans-serif; background: #fff; color: var(--text); }
 
-/* NAV */
+/* TOP NAV */
 nav {
-  position: sticky; top: 0; z-index: 500;
-  background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 28px; height: 72px;
+  position: sticky; top: 0; z-index: 1000;
+  background: #fff; border-bottom: 1px solid var(--border);
+  padding: 0 40px; height: 70px;
   display: flex; align-items: center; justify-content: space-between;
 }
-.logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-.logo-img { height: 42px; width: auto; object-fit: contain; }
-.logo-text { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900; color: var(--primary-navy); letter-spacing: -0.5px; }
-.logo-text span { color: var(--accent-blue); }
+.logo { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: var(--brown); cursor: pointer; }
+.logo span { color: var(--gold); }
+.nav-links { display: flex; gap: 12px; align-items: center; }
+.nav-btn { padding: 10px 20px; border-radius: 10px; border: none; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+.nav-btn.ghost { background: transparent; color: var(--text); }
+.nav-btn.primary { background: var(--brown); color: #fff; }
+.nav-btn.gold { background: var(--gold); color: #fff; }
 
-.nav-links { display: flex; gap: 8px; }
-.nav-btn { padding: 8px 20px; border-radius: 8px; border: none; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-.nav-btn.ghost { background: transparent; color: var(--text-muted); }
-.nav-btn.ghost:hover { color: var(--primary-navy); background: var(--accent-soft); }
-.nav-btn.primary { background: var(--accent-blue); color: #fff; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); }
-
-/* BROWSE PAGE */
-.browse-layout { display: grid; grid-template-columns: 360px 1fr; min-height: calc(100vh - 72px); }
-.sidebar {
-  background: var(--surface); border-right: 1px solid var(--border);
-  overflow-y: auto; padding: 25px;
-  position: sticky; top: 72px; height: calc(100vh - 72px);
+/* HOME HERO (Airbnb Style) */
+.hero-section { padding: 40px 40px 20px; max-width: 1400px; margin: 0 auto; }
+.search-bar-container {
+  background: #fff; border: 1px solid var(--border);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border-radius: 50px; display: flex; align-items: center;
+  padding: 8px 10px 8px 30px; margin-bottom: 40px;
 }
-.sidebar-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; margin-bottom: 20px; color: var(--primary-navy); }
-.filter-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 10px; margin-top: 20px; }
-.chip { padding: 8px 16px; border-radius: 25px; border: 1.5px solid var(--border); font-size: 13px; color: var(--text-muted); cursor: pointer; transition: 0.2s; background: transparent; margin: 0 4px 8px 0; display: inline-block; font-weight: 500; }
-.chip.active { background: var(--accent-blue); border-color: var(--accent-blue); color: #fff; }
+.search-input-group { flex: 1; border-right: 1px solid var(--border); padding-right: 20px; }
+.search-input-group:last-of-type { border-right: none; }
+.search-label { font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--text); margin-bottom: 2px; }
+.search-input-group input, .search-input-group select { 
+  border: none; outline: none; width: 100%; font-family: 'Outfit'; font-size: 14px; color: var(--muted); background: transparent;
+}
+.search-circle { 
+  width: 48px; height: 48px; background: var(--gold); border-radius: 50%; 
+  display: flex; align-items: center; justify-content: center; color: white; cursor: pointer;
+}
 
-/* MAP + CARDS */
-.map-side { display: flex; flex-direction: column; }
-.map-container { height: 45vh; border-bottom: 1px solid var(--border); }
-#map { width: 100%; height: 100%; }
-.cards-area { flex: 1; padding: 30px; background: var(--bg-main); }
-.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+/* CATEGORIES (Visible Grid) */
+.category-section { margin-bottom: 40px; }
+.cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
+.cat-item {
+  text-align: center; padding: 20px 10px; border-radius: 15px;
+  background: var(--cream); border: 1px solid transparent; cursor: pointer; transition: 0.2s;
+}
+.cat-item:hover { border-color: var(--gold); background: #fff; box-shadow: var(--shadow); }
+.cat-icon { font-size: 32px; margin-bottom: 8px; display: block; }
+.cat-name { font-weight: 700; font-size: 14px; color: var(--brown); }
+.cat-count { font-size: 11px; color: var(--muted); margin-top: 4px; }
 
-/* PROPERTY CARD */
-.prop-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); transition: 0.3s; cursor: pointer; border: 1px solid var(--border); }
-.prop-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--accent-blue); }
-.card-img { height: 200px; background: var(--primary-navy); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; color: white; font-size: 40px; }
-.card-body { padding: 18px; }
-.card-price { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 800; color: var(--accent-blue); }
+/* SPLIT MAP VIEW (Professional Real Estate Style) */
+.home-discover { display: grid; grid-template-columns: 1fr 450px; gap: 20px; height: 600px; margin-bottom: 60px; }
+.home-map-wrap { border-radius: 20px; overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow); position: relative; }
+#homeMap { width: 100%; height: 100%; }
+.featured-list { overflow-y: auto; padding-right: 10px; }
+.section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
+.section-header h2 { font-family: 'Playfair Display'; font-size: 24px; font-weight: 800; }
+.view-all { color: var(--gold); font-weight: 700; font-size: 13px; text-decoration: none; cursor: pointer; }
 
-/* POST AD & PHOTO UPLOAD */
-.post-wrap { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
-.form-card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: var(--shadow); margin-bottom: 24px; border: 1px solid var(--border); }
-.photo-drop { border: 2px dashed var(--border); border-radius: 12px; padding: 40px; text-align: center; cursor: pointer; background: var(--bg-main); transition: 0.2s; }
-.photo-drop:hover { border-color: var(--accent-blue); background: var(--accent-soft); }
-.photo-previews { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
-.photo-thumb { width: 110px; height: 110px; border-radius: 10px; background-size: cover; background-position: center; border: 1px solid var(--border); position: relative; }
-.photo-thumb .remove { position: absolute; top: -8px; right: -8px; width: 24px; height: 24px; border-radius: 50%; background: #ef4444; color: white; border: none; cursor: pointer; font-weight: bold; }
+/* MINI CARD (For Home Sidebar) */
+.mini-card {
+  display: flex; gap: 15px; background: #fff; padding: 12px;
+  border-radius: 15px; margin-bottom: 12px; border: 1px solid var(--border);
+  transition: 0.2s; cursor: pointer;
+}
+.mini-card:hover { border-color: var(--gold); box-shadow: var(--shadow); }
+.mini-img { width: 100px; height: 85px; border-radius: 10px; background: var(--brown); display: flex; align-items: center; justify-content: center; font-size: 30px; color: white; }
+.mini-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.mini-price { font-family: 'Playfair Display'; font-weight: 700; color: var(--gold); font-size: 16px; }
+.mini-title { font-size: 13px; font-weight: 600; margin: 2px 0; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 250px; }
+.mini-loc { font-size: 11px; color: var(--muted); }
 
-input, select, textarea { width: 100%; padding: 12px; border: 1.5px solid var(--border); border-radius: 10px; background: #fff; outline: none; margin-top: 6px; }
-input:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px var(--accent-soft); }
-
-.submit-btn { width: 100%; padding: 18px; background: var(--primary-navy); color: white; border: none; border-radius: 12px; font-family: 'Playfair Display'; font-size: 18px; font-weight: 700; cursor: pointer; transition: 0.2s; }
-.submit-btn:hover { background: var(--accent-blue); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-
+/* OTHER PAGES (Hidden by default) */
 .page { display: none; }
 .page.active { display: block; }
-.success-overlay { position: fixed; inset: 0; z-index: 999; background: rgba(255, 255, 255, 0.98); display: none; align-items: center; justify-content: center; text-align: center; }
-.success-overlay.show { display: flex; }
+
+@media (max-width: 1000px) {
+  .home-discover { grid-template-columns: 1fr; height: auto; }
+  .home-map-wrap { height: 400px; }
+  .featured-list { height: 500px; }
+  .search-bar-container { flex-direction: column; border-radius: 20px; padding: 20px; gap: 15px; }
+  .search-input-group { border-right: none; border-bottom: 1px solid var(--border); padding: 0 0 10px 0; }
+}
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo-container" onclick="showPage('home')">
-    <img src="logo.png" alt="Infinitzy Logo" class="logo-img">
-    <div class="logo-text">Infinit<span>zy</span></div>
-  </div>
+  <div class="logo" onclick="showPage('home')">Infinit<span>zy</span></div>
   <div class="nav-links">
     <button class="nav-btn ghost" onclick="showPage('home')">Home</button>
-    <button class="nav-btn ghost" onclick="showPage('browse')">Browse Ads</button>
-    <button class="nav-btn primary" onclick="showPage('post')">+ Post Ad</button>
+    <button class="nav-btn ghost" onclick="showPage('browse')">Browse All</button>
+    <button class="nav-btn gold" onclick="showPage('post')">Post Ad Free</button>
   </div>
 </nav>
 
 <div id="page-home" class="page active">
-  <div style="background: var(--primary-navy); padding: 100px 20px; text-align: center; color: white;">
-    <h1 style="font-family: 'Playfair Display', serif; font-size: 52px; margin-bottom: 20px;">Premium Properties<br>in <span style="color:var(--accent-blue)">Sri Lanka</span></h1>
-    <div style="max-width: 650px; margin: 30px auto; display: flex; gap: 10px; background: white; padding: 10px; border-radius: 14px; box-shadow: var(--shadow-lg);">
-      <input type="text" id="h-search" placeholder="Search by city or district..." style="flex:1; border:none; outline:none; padding:10px 15px; font-size:16px; color: var(--text-main);">
-      <button class="nav-btn primary" onclick="showPage('browse')" style="padding: 0 30px;">Search</button>
-    </div>
-  </div>
-</div>
-
-<div id="page-browse" class="page">
-  <div class="browse-layout">
-    <div class="sidebar">
-      <div class="sidebar-title">🔍 Browse Listings</div>
-      <div class="filter-label">Quick Search</div>
-      <input type="text" id="b-search" placeholder="e.g. Galle Villa" oninput="applyFilters()">
-      
-      <div class="filter-label">District</div>
-      <div id="distChips">
-        <div class="chip active" onclick="setChip(this)">All</div>
-        <div class="chip" onclick="setChip(this)">Colombo</div>
-        <div class="chip" onclick="setChip(this)">Galle</div>
-        <div class="chip" onclick="setChip(this)">Kandy</div>
+  <div class="hero-section">
+    <div class="search-bar-container">
+      <div class="search-input-group">
+        <div class="search-label">Location</div>
+        <input type="text" id="h-loc" placeholder="Where in Sri Lanka?">
       </div>
-    </div>
-    <div class="map-side">
-      <div class="map-container"><div id="map"></div></div>
-      <div class="cards-area">
-        <div class="cards-grid" id="cardsGrid"></div>
+      <div class="search-input-group">
+        <div class="search-label">Property Type</div>
+        <select id="h-type">
+          <option value="All">Any Property Type</option>
+          <option>House</option><option>Land</option><option>Apartment</option><option>Villa</option>
+        </select>
       </div>
+      <div class="search-input-group">
+        <div class="search-label">Price Range</div>
+        <select id="h-price">
+          <option value="0">Any Price</option>
+          <option value="10M">Under 10 Million</option>
+          <option value="50M">10M - 50 Million</option>
+          <option value="100M">50M+</option>
+        </select>
+      </div>
+      <div class="search-circle" onclick="doGlobalSearch()">🔍</div>
     </div>
-  </div>
-</div>
 
-<div id="page-post" class="page">
-  <div class="post-wrap">
-    <div class="form-card">
-      <h2 style="font-family: 'Playfair Display', serif; margin-bottom:20px; color: var(--primary-navy);">Listing Details</h2>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-        <div style="grid-column: 1/-1;"><label>Ad Title *</label><input type="text" id="f-title" placeholder="e.g. Modern Villa with Pool"></div>
-        <div><label>Price (LKR) *</label><input type="number" id="f-price"></div>
-        <div><label>Category</label>
-          <select id="f-type"><option>House</option><option>Land</option><option>Villa</option><option>Apartment</option></select>
+    <div class="category-section">
+      <div class="cat-grid" id="catGrid">
+        <div class="cat-item" onclick="filterAndBrowse('House')">
+          <span class="cat-icon">🏠</span>
+          <div class="cat-name">Houses</div>
+          <div class="cat-count" id="c-house">0 listings</div>
+        </div>
+        <div class="cat-item" onclick="filterAndBrowse('Land')">
+          <span class="cat-icon">🌿</span>
+          <div class="cat-name">Land</div>
+          <div class="cat-count" id="c-land">0 listings</div>
+        </div>
+        <div class="cat-item" onclick="filterAndBrowse('Apartment')">
+          <span class="cat-icon">🏢</span>
+          <div class="cat-name">Apartments</div>
+          <div class="cat-count" id="c-apt">0 listings</div>
+        </div>
+        <div class="cat-item" onclick="filterAndBrowse('Villa')">
+          <span class="cat-icon">🏡</span>
+          <div class="cat-name">Villas</div>
+          <div class="cat-count" id="c-villa">0 listings</div>
+        </div>
+        <div class="cat-item" onclick="filterAndBrowse('Commercial')">
+          <span class="cat-icon">🏪</span>
+          <div class="cat-name">Commercial</div>
+          <div class="cat-count" id="c-comm">0 listings</div>
+        </div>
+        <div class="cat-item" onclick="filterAndBrowse('Room')">
+          <span class="cat-icon">🛏️</span>
+          <div class="cat-name">Rooms</div>
+          <div class="cat-count" id="c-room">0 listings</div>
         </div>
       </div>
     </div>
 
-    <div class="form-card">
-      <h3 style="font-family: 'Playfair Display', serif; margin-bottom:15px;">Property Gallery</h3>
-      <input type="file" id="photo-input" accept="image/*" multiple style="display: none;">
-      <div class="photo-drop" onclick="document.getElementById('photo-input').click()">
-        <div style="font-size: 44px; margin-bottom: 10px;">📸</div>
-        <p>Click to <strong>Upload Photos</strong></p>
-        <p style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Upload up to 10 photos of your property</p>
+    <div class="home-discover">
+      <div class="home-map-wrap">
+        <div id="homeMap"></div>
       </div>
-      <div class="photo-previews" id="photoPreviews"></div>
+      <div class="featured-list">
+        <div class="section-header">
+          <h2>Latest Listings</h2>
+          <div class="view-all" onclick="showPage('browse')">View all results →</div>
+        </div>
+        <div id="latestHomeGrid">
+          </div>
+      </div>
     </div>
-
-    <div class="form-card">
-      <h3>Set Location</h3>
-      <div id="postMap" style="height: 250px; border-radius: 12px; margin-top: 15px; border: 1px solid var(--border);"></div>
-      <input type="hidden" id="f-lat" value="6.0535">
-      <input type="hidden" id="f-lng" value="80.2210">
-    </div>
-
-    <button class="submit-btn" onclick="submitAd()">Publish Property</button>
   </div>
 </div>
 
-<div class="success-overlay" id="successOverlay">
-  <div>
-    <div style="font-size: 70px;">🎉</div>
-    <h2 style="font-family: 'Playfair Display'; font-size: 32px; color: var(--primary-navy); margin-top: 20px;">Listing Published!</h2>
-    <p style="color: var(--text-muted); margin: 15px 0 30px;">Your property is now visible on the map.</p>
-    <button class="nav-btn primary" onclick="location.reload()">Return Home</button>
-  </div>
+<div id="page-browse" class="page" style="padding:100px; text-align:center;">
+    <h2>Browse Page Placeholder</h2>
+    <button onclick="showPage('home')">Back to Home</button>
+</div>
+<div id="page-post" class="page" style="padding:100px; text-align:center;">
+    <h2>Post Ad Page Placeholder</h2>
+    <button onclick="showPage('home')">Back to Home</button>
 </div>
 
 <script>
-let listings = [
-  { id: 1, title: 'Modern Villa in Galle', price: 45000000, dist: 'Galle', lat: 6.0367, lng: 80.2170, imgs: [] }
+// MOCK DATA
+const listings = [
+  { id:1, title:'Modern 3BR House - Colombo', price:28500000, type:'House', dist:'Colombo', lat:6.9271, lng:79.8612 },
+  { id:2, title:'Ocean View Villa - Galle', price:95000000, type:'Villa', dist:'Galle', lat:6.0367, lng:80.2170 },
+  { id:3, title:'20 Perch Land - Kandy', price:12000000, type:'Land', dist:'Kandy', lat:7.2906, lng:80.6337 },
+  { id:4, title:'Luxury Apartment - Negombo', price:45000000, type:'Apartment', dist:'Negombo', lat:7.2083, lng:79.8358 }
 ];
-let currentPhotos = [];
-let map, postMap, postMarker, markers = [];
+
+let homeMap;
 
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
-  if (id === 'browse') setTimeout(initBrowse, 100);
-  if (id === 'post') setTimeout(initPostMap, 100);
+  if (id === 'home') initHome();
   window.scrollTo(0,0);
 }
 
-// REAL PHOTO UPLOAD LOGIC
-document.getElementById('photo-input').addEventListener('change', function(e) {
-  const files = Array.from(e.target.files);
-  files.forEach(file => {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      currentPhotos.push(event.target.result);
-      renderPreviews();
-    };
-    reader.readAsDataURL(file);
-  });
-});
-
-function renderPreviews() {
-  const container = document.getElementById('photoPreviews');
-  container.innerHTML = currentPhotos.map((src, i) => `
-    <div class="photo-thumb" style="background-image: url(${src})">
-      <button class="remove" onclick="removePhoto(${i})">✕</button>
-    </div>
-  `).join('');
-}
-
-function removePhoto(i) {
-  currentPhotos.splice(i, 1);
-  renderPreviews();
-}
-
-// MAP & BROWSE LOGIC
-function initBrowse() {
-  if (map) { map.invalidateSize(); return; }
-  map = L.map('map').setView([7.8731, 80.7718], 7);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-  applyFilters();
-}
-
-function renderCards(data) {
-  const grid = document.getElementById('cardsGrid');
-  grid.innerHTML = data.map(l => `
-    <div class="prop-card">
-      <div class="card-img" style="background-image: url(${l.imgs[0] || ''});">
-        ${!l.imgs[0] ? '🏠' : ''}
-      </div>
-      <div class="card-body">
-        <div class="card-price">LKR ${l.price.toLocaleString()}</div>
-        <div style="font-weight:700; margin-top:5px; color:var(--primary-navy)">${l.title}</div>
-        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">📍 ${l.dist}</div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function applyFilters() {
-  renderCards(listings);
-  markers.forEach(m => map.removeLayer(m));
+function initHome() {
+  updateCounts();
+  renderLatest();
+  
+  if (!homeMap) {
+    homeMap = L.map('homeMap').setView([7.8731, 80.7718], 7);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(homeMap);
+  }
+  
+  // Render Markers
   listings.forEach(l => {
-    let m = L.marker([l.lat, l.lng]).addTo(map).bindPopup(l.title);
-    markers.push(m);
+    L.marker([l.lat, l.lng]).addTo(homeMap).bindPopup(`<b>${l.title}</b><br>LKR ${l.price.toLocaleString()}`);
   });
 }
 
-function initPostMap() {
-  if (postMap) { postMap.invalidateSize(); return; }
-  postMap = L.map('postMap').setView([6.0535, 80.2210], 12);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(postMap);
-  postMarker = L.marker([6.0535, 80.2210], {draggable: true}).addTo(postMap);
-  postMarker.on('dragend', () => {
-    const p = postMarker.getLatLng();
-    document.getElementById('f-lat').value = p.lat;
-    document.getElementById('f-lng').value = p.lng;
-  });
-}
-
-function submitAd() {
-  const title = document.getElementById('f-title').value;
-  if (!title) return alert("Title is required");
+function updateCounts() {
+  const counts = { House:0, Land:0, Apartment:0, Villa:0, Commercial:0, Room:0 };
+  listings.forEach(l => counts[l.type]++);
   
-  listings.unshift({
-    id: Date.now(),
-    title: title,
-    price: parseInt(document.getElementById('f-price').value) || 0,
-    dist: 'Galle',
-    lat: parseFloat(document.getElementById('f-lat').value),
-    lng: parseFloat(document.getElementById('f-lng').value),
-    imgs: [...currentPhotos]
-  });
-  
-  document.getElementById('successOverlay').classList.add('show');
+  document.getElementById('c-house').innerText = counts.House + ' listings';
+  document.getElementById('c-land').innerText = counts.Land + ' listings';
+  document.getElementById('c-apt').innerText = counts.Apartment + ' listings';
+  document.getElementById('c-villa').innerText = counts.Villa + ' listings';
+  document.getElementById('c-comm').innerText = counts.Commercial + ' listings';
+  document.getElementById('c-room').innerText = counts.Room + ' listings';
 }
 
-function setChip(el) {
-  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  applyFilters();
+function renderLatest() {
+  const container = document.getElementById('latestHomeGrid');
+  const icons = { House:'🏠', Land:'🌿', Apartment:'🏢', Villa:'🏡' };
+  
+  container.innerHTML = listings.map(l => `
+    <div class="mini-card" onclick="alert('Viewing: ${l.title}')">
+      <div class="mini-img">${icons[l.type] || '🏠'}</div>
+      <div class="mini-info">
+        <div class="mini-price">LKR ${(l.price/1000000).toFixed(1)}M</div>
+        <div class="mini-title">${l.title}</div>
+        <div class="mini-loc">📍 ${l.dist}</div>
+      </div>
+    </div>
+  `).join('');
 }
+
+function filterAndBrowse(type) {
+  alert("Filtering for: " + type + ". Redirecting to Browse page...");
+  showPage('browse');
+}
+
+function doGlobalSearch() {
+  const loc = document.getElementById('h-loc').value;
+  alert("Searching in: " + loc);
+  showPage('browse');
+}
+
+// Start on Home
+window.onload = initHome;
 </script>
 </body>
 </html>
-
