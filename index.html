@@ -1,168 +1,138 @@
-To provide a distinguished, professional look similar to leading global real estate platforms, I have overhauled the color palette using a Deep Navy, Vibrant Blue, and Clean Slate theme. This high-contrast design looks more modern and trustworthy than the previous earth-toned version.
-I have also replaced the text-based logo with an <img> tag and integrated the real photo browsing logic into the "Post Ad" section so you can upload and preview actual images from your device.
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Infinitzy — Sri Lanka Real Estate</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 :root {
-  /* PROFESSIONAL MODERN PALETTE */
-  --primary-navy: #0f172a;    /* Deep, distinguished navy */
-  --accent-blue: #2563eb;     /* Vibrant action blue */
-  --accent-light: #dbeafe;    /* Soft blue tint for backgrounds */
-  --bg-main: #f8fafc;         /* Clean slate white */
+  --cream: #faf7f2;
+  --warm: #f5efe6;
+  --brown: #2c1810;
+  --gold: #c9873a;
+  --gold-light: #e8a855;
+  --rust: #a0522d;
+  --text: #1a1208;
+  --muted: #7a6a5a;
+  --border: rgba(44,24,16,0.12);
   --surface: #ffffff;
-  --text-main: #1e293b;       /* Dark slate text */
-  --text-muted: #64748b;      /* Muted steel text */
-  --border: #e2e8f0;          /* Subtle borders */
-  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow: 0 4px 24px rgba(44,24,16,0.08);
+  --shadow-lg: 0 12px 48px rgba(44,24,16,0.14);
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Inter', sans-serif; background: var(--bg-main); color: var(--text-main); min-height: 100vh; }
+body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
 
 /* NAV */
 nav {
-  position: sticky; top: 0; z-index: 1000;
-  background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px);
+  position: sticky; top: 0; z-index: 500;
+  background: rgba(250,247,242,0.92); backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
-  padding: 0 40px; height: 72px;
+  padding: 0 28px; height: 72px;
   display: flex; align-items: center; justify-content: space-between;
 }
-.logo-container { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-.logo-img { height: 42px; width: auto; object-fit: contain; }
-.logo-text { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900; color: var(--primary-navy); }
-.logo-text span { color: var(--accent-blue); }
+.logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+.logo-img { height: 40px; width: auto; object-fit: contain; }
+.logo-text { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900; color: var(--brown); letter-spacing: -0.5px; }
+.logo-text span { color: var(--gold); }
 
-.nav-links { display: flex; gap: 8px; }
-.nav-btn { padding: 10px 22px; border-radius: 8px; border: none; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-.nav-btn.ghost { background: transparent; color: var(--text-muted); }
-.nav-btn.ghost:hover { color: var(--primary-navy); background: var(--accent-light); }
-.nav-btn.primary { background: var(--accent-blue); color: #fff; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
-.nav-btn.primary:hover { background: #1d4ed8; transform: translateY(-1px); }
+.nav-links { display: flex; gap: 6px; }
+.nav-btn { padding: 8px 18px; border-radius: 8px; border: none; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+.nav-btn.ghost { background: transparent; color: var(--muted); }
+.nav-btn.ghost:hover { color: var(--brown); background: var(--warm); }
+.nav-btn.primary { background: var(--gold); color: #fff; font-weight: 600; box-shadow: 0 2px 12px rgba(201,135,58,0.35); }
+.nav-btn.primary:hover { background: var(--gold-light); transform: translateY(-1px); }
 
-/* LANDING HERO */
-.landing-hero {
-  background: var(--primary-navy);
-  padding: 100px 20px; text-align: center; color: white;
-  position: relative; overflow: hidden;
-}
-.landing-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(36px, 5vw, 60px); line-height: 1.1; margin-bottom: 20px; }
-.landing-hero h1 em { font-style: normal; color: var(--accent-blue); }
-.hero-search {
-  max-width: 650px; margin: 30px auto; background: #fff; padding: 10px; 
-  border-radius: 14px; display: flex; gap: 10px; box-shadow: var(--shadow-lg);
-}
-.hero-search input { flex: 1; border: none; padding: 12px 20px; outline: none; font-size: 16px; border-radius: 10px; }
-.hero-search button { background: var(--accent-blue); color: white; border: none; padding: 0 30px; border-radius: 10px; font-weight: 700; cursor: pointer; }
-
-/* CATEGORY CARDS */
-.cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; padding: 60px 40px; max-width: 1200px; margin: 0 auto; }
-.cat-card {
-  background: var(--surface); padding: 30px 20px; border-radius: 16px; 
-  text-align: center; border: 1px solid var(--border); transition: 0.3s; cursor: pointer;
-}
-.cat-card:hover { border-color: var(--accent-blue); transform: translateY(-5px); box-shadow: var(--shadow); }
-.cat-icon { font-size: 36px; margin-bottom: 12px; display: block; }
-.cat-name { font-weight: 700; font-size: 15px; color: var(--primary-navy); }
-
-/* BROWSE PAGE */
+/* PAGES */
 .page { display: none; }
 .page.active { display: block; }
-.browse-layout { display: grid; grid-template-columns: 350px 1fr; height: calc(100vh - 72px); }
-.sidebar { background: #fff; border-right: 1px solid var(--border); padding: 25px; overflow-y: auto; }
-.filter-label { font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin: 20px 0 10px; letter-spacing: 0.5px; }
-.chip { display: inline-block; padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border); font-size: 13px; margin: 0 4px 8px 0; cursor: pointer; transition: 0.2s; }
-.chip.active { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
 
-/* MAP & CARDS */
-.map-container { height: 45vh; border-bottom: 1px solid var(--border); }
-#map { height: 100%; width: 100%; }
-.cards-area { padding: 30px; background: var(--bg-main); }
+/* BROWSE PAGE */
+.browse-layout { display: grid; grid-template-columns: 380px 1fr; min-height: calc(100vh - 72px); }
+.sidebar {
+  background: var(--surface); border-right: 1px solid var(--border);
+  overflow-y: auto; padding: 22px 20px;
+  position: sticky; top: 72px; height: calc(100vh - 72px);
+}
+.sidebar-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-bottom: 18px; color: var(--brown); }
+.filter-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 8px; margin-top: 18px; }
+.chip { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 13px; color: var(--muted); cursor: pointer; transition: 0.18s; background: transparent; margin: 0 4px 8px 0; display: inline-block; }
+.chip.active { background: var(--gold); border-color: var(--gold); color: #fff; font-weight: 600; }
+
+/* MAP + CARDS */
+.map-side { display: flex; flex-direction: column; }
+.map-container { height: 50vh; position: relative; border-bottom: 1px solid var(--border); }
+#map { width: 100%; height: 100%; }
+.cards-area { flex: 1; padding: 25px; background: var(--cream); }
 .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-.prop-card { background: #fff; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; transition: 0.2s; cursor: pointer; }
-.prop-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--accent-blue); }
-.card-img { height: 200px; background: var(--primary-navy); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; color: white; font-size: 40px; }
+
+/* PROPERTY CARD */
+.prop-card { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); transition: 0.25s; cursor: pointer; border: 1.5px solid transparent; }
+.prop-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
+.card-img { height: 190px; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; font-size: 50px; color: white; position: relative; }
 .card-body { padding: 16px; }
-.card-price { font-size: 20px; font-weight: 800; color: var(--accent-blue); }
+.card-price { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--brown); }
 
-/* POST AD PAGE & PHOTO PREVIEWS */
-.post-wrap { max-width: 800px; margin: 0 auto; padding: 50px 20px; }
-.form-card { background: #fff; border-radius: 16px; padding: 30px; margin-bottom: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); }
-.photo-drop { border: 2px dashed var(--border); border-radius: 12px; padding: 40px; text-align: center; cursor: pointer; background: #fcfcfc; }
-.photo-drop:hover { border-color: var(--accent-blue); background: var(--accent-light); }
+/* POST AD & REAL PHOTO STYLES */
+.post-wrap { max-width: 760px; margin: 0 auto; padding: 40px 20px 80px; }
+.form-card { background: #fff; border-radius: 20px; padding: 30px; box-shadow: var(--shadow); margin-bottom: 20px; border: 1px solid var(--border); }
+.photo-drop { border: 2px dashed var(--border); border-radius: 14px; padding: 40px; text-align: center; cursor: pointer; transition: 0.2s; background: var(--warm); }
+.photo-drop:hover { border-color: var(--gold); background: rgba(201,135,58,0.04); }
 .photo-previews { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
-.photo-thumb { width: 100px; height: 100px; border-radius: 10px; background-size: cover; background-position: center; border: 1px solid var(--border); position: relative; }
-.photo-thumb .remove { position: absolute; top: -8px; right: -8px; width: 24px; height: 24px; border-radius: 50%; background: #ef4444; color: white; border: none; cursor: pointer; font-weight: bold; font-size: 12px; }
+.photo-thumb { width: 100px; height: 100px; border-radius: 12px; background-size: cover; background-position: center; border: 1px solid var(--border); position: relative; }
+.photo-thumb .remove { position: absolute; top: -8px; right: -8px; width: 24px; height: 24px; border-radius: 50%; background: #e74c3c; color: #fff; border: none; cursor: pointer; font-weight: bold; }
 
-input, select, textarea { width: 100%; padding: 12px; border: 1.5px solid var(--border); border-radius: 10px; outline: none; font-family: inherit; margin-top: 5px; }
-input:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px var(--accent-light); }
-.submit-btn { width: 100%; padding: 18px; background: var(--primary-navy); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 18px; cursor: pointer; transition: 0.2s; }
-.submit-btn:hover { background: var(--accent-blue); transform: translateY(-2px); }
-
-/* SUCCESS OVERLAY */
-.success-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.98); z-index: 9999; display: none; align-items: center; justify-content: center; text-align: center; }
+/* SUCCESS & MISC */
+.success-overlay { position: fixed; inset: 0; z-index: 9000; background: rgba(250,247,242,0.95); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; }
+.success-overlay.show { display: flex; }
+.toast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: var(--brown); color: #fff; padding: 14px 20px; border-radius: 12px; opacity: 0; transition: 0.3s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateY(-10px); }
 </style>
 </head>
 <body>
 
 <nav>
   <div class="logo-container" onclick="showPage('home')">
-    <img src="logo.png" alt="Infinitzy" class="logo-img"> <div class="logo-text">Infinit<span>zy</span></div>
+    <img src="logo.png" alt="Infinitzy" class="logo-img">
+    <div class="logo-text">Infinit<span>zy</span></div>
   </div>
   <div class="nav-links">
     <button class="nav-btn ghost" onclick="showPage('home')">Home</button>
-    <button class="nav-btn ghost" onclick="showPage('browse')">Browse</button>
+    <button class="nav-btn ghost" onclick="showPage('browse')">Browse Ads</button>
     <button class="nav-btn primary" onclick="showPage('post')">+ Post Ad</button>
   </div>
 </nav>
 
 <div id="page-home" class="page active">
-  <div class="landing-hero">
-    <h1>Find Your Dream<br>Property in <em>Sri Lanka</em></h1>
-    <div class="hero-search">
-      <input type="text" id="h-search" placeholder="Search city, district, or type...">
-      <button onclick="quickSearch()">Search</button>
+  <div style="background: linear-gradient(160deg, #2c1810 0%, #4a2c1a 100%); padding: 100px 20px; text-align: center; color: white;">
+    <h1 style="font-family: 'Playfair Display', serif; font-size: 50px; margin-bottom: 20px;">Find Your Dream<br>Property in <span style="color:var(--gold-light)">Sri Lanka</span></h1>
+    <div style="max-width: 600px; margin: 0 auto; display: flex; gap: 10px; background: white; padding: 8px; border-radius: 14px;">
+      <input type="text" id="h-search" placeholder="City, district or property type..." style="flex:1; border:none; outline:none; padding:10px 15px; font-size:16px;">
+      <button class="nav-btn primary" onclick="doHeroSearch()" style="padding: 10px 30px;">Search</button>
     </div>
   </div>
-
-  <div class="cat-grid">
-    <div class="cat-card" onclick="filterBrowse('House')"><span class="cat-icon">🏠</span><div class="cat-name">Houses</div></div>
-    <div class="cat-card" onclick="filterBrowse('Apartment')"><span class="cat-icon">🏢</span><div class="cat-name">Apartments</div></div>
-    <div class="cat-card" onclick="filterBrowse('Land')"><span class="cat-icon">🌿</span><div class="cat-name">Land</div></div>
-    <div class="cat-card" onclick="filterBrowse('Villa')"><span class="cat-icon">🏡</span><div class="cat-name">Villas</div></div>
   </div>
-</div>
 
 <div id="page-browse" class="page">
   <div class="browse-layout">
     <div class="sidebar">
-      <h3>Search Filters</h3>
-      <input type="text" id="b-search" placeholder="Keywords..." oninput="renderBrowse()">
+      <div class="sidebar-title">🔍 Filter Properties</div>
+      <input type="text" id="b-search" placeholder="Search location..." oninput="applyFilters()" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); margin-bottom:15px;">
       
       <div class="filter-label">District</div>
-      <select id="f-dist" onchange="renderBrowse()">
-        <option value="All">All Districts</option>
-        <option>Colombo</option><option>Galle</option><option>Kandy</option>
-      </select>
-
-      <div class="filter-label">Listing Type</div>
-      <div id="type-chips">
-        <div class="chip active" onclick="setChip(this, 'All')">All</div>
-        <div class="chip" onclick="setChip(this, 'For Sale')">For Sale</div>
-        <div class="chip" onclick="setChip(this, 'For Rent')">For Rent</div>
+      <div id="distChips">
+        <div class="chip active" onclick="toggleChip(this,'dist')">All</div>
+        <div class="chip" onclick="toggleChip(this,'dist')">Colombo</div>
+        <div class="chip" onclick="toggleChip(this,'dist')">Galle</div>
+        <div class="chip" onclick="toggleChip(this,'dist')">Kandy</div>
       </div>
     </div>
-    <div style="overflow-y: auto;">
+    <div class="map-side">
       <div class="map-container"><div id="map"></div></div>
       <div class="cards-area">
-        <div class="cards-grid" id="browseGrid"></div>
+        <div class="cards-grid" id="cardsGrid"></div>
       </div>
     </div>
   </div>
@@ -171,19 +141,19 @@ input:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px var(--acce
 <div id="page-post" class="page">
   <div class="post-wrap">
     <div class="form-card">
-      <h2 style="margin-bottom: 20px;">Listing Information</h2>
+      <h2 style="font-family: 'Playfair Display', serif; margin-bottom:20px;">Property Details</h2>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
         <div style="grid-column: 1/-1;">
-          <label>Property Title *</label>
-          <input type="text" id="f-title" placeholder="e.g. Modern Villa in Galle">
+          <label>Ad Title *</label>
+          <input type="text" id="f-title" placeholder="e.g. 3BR Luxury Villa in Galle">
         </div>
         <div>
           <label>Price (LKR) *</label>
           <input type="number" id="f-price">
         </div>
         <div>
-          <label>Category</label>
-          <select id="f-type">
+          <label>Property Type</label>
+          <select id="f-proptype">
             <option>House</option><option>Apartment</option><option>Land</option><option>Villa</option>
           </select>
         </div>
@@ -191,40 +161,41 @@ input:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px var(--acce
     </div>
 
     <div class="form-card">
-      <h3 style="margin-bottom: 15px;">Property Photos</h3>
+      <h3 style="font-family: 'Playfair Display', serif; margin-bottom:15px;">Property Photos</h3>
       <input type="file" id="photo-input" accept="image/*" multiple style="display: none;">
       <div class="photo-drop" onclick="document.getElementById('photo-input').click()">
-        <div style="font-size: 32px; margin-bottom: 8px;">📸</div>
-        <p>Click to <strong>Browse Device Gallery</strong></p>
-        <p style="font-size: 12px; color: var(--text-muted);">You can select multiple photos</p>
+        <div style="font-size: 40px; margin-bottom: 10px;">📸</div>
+        <p>Click to <strong>Browse Photos</strong> from your device</p>
+        <p style="font-size: 12px; color: var(--muted);">High-quality images get 3x more leads</p>
       </div>
       <div class="photo-previews" id="photoPreviews"></div>
     </div>
 
     <div class="form-card">
       <h3>Location</h3>
-      <div id="postMap" style="height: 250px; border-radius: 12px; margin: 15px 0;"></div>
-      <input type="hidden" id="f-lat" value="6.0535">
-      <input type="hidden" id="f-lng" value="80.2210">
+      <div id="postMap" style="height: 250px; border-radius: 12px; margin-top: 15px; border: 1px solid var(--border);"></div>
+      <input type="hidden" id="f-lat" value="6.9271">
+      <input type="hidden" id="f-lng" value="79.8612">
     </div>
 
-    <button class="submit-btn" onclick="submitAd()">Publish Property</button>
+    <button class="submit-btn" onclick="submitAd()" style="width:100%; padding:18px; background:var(--brown); color:white; border:none; border-radius:12px; font-family:'Playfair Display'; font-size:18px; font-weight:700; cursor:pointer;">Publish Ad Free</button>
   </div>
 </div>
 
 <div class="success-overlay" id="successOverlay">
-  <div>
-    <div style="font-size: 70px;">🎉</div>
-    <h2 style="font-size: 32px; margin: 20px 0;">Ad Published Successfully!</h2>
-    <button class="nav-btn primary" onclick="location.reload()">Back to Homepage</button>
+  <div style="text-align: center;">
+    <div style="font-size: 80px;">🎉</div>
+    <h2 style="font-family: 'Playfair Display'; font-size: 32px; color: var(--brown);">Ad Published!</h2>
+    <p style="margin: 15px 0 30px; color: var(--muted);">Your listing is now live on the map.</p>
+    <button class="nav-btn primary" onclick="location.reload()">Back to Home</button>
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
-// STATE
 let listings = [
-  { id: 1, title: "Modern Villa Galle", price: 45000000, type: "Villa", dist: "Galle", lat: 6.0367, lng: 80.2170, imgs: [] },
-  { id: 2, title: "City Apartment Colombo", price: 32000000, type: "Apartment", dist: "Colombo", lat: 6.9271, lng: 79.8612, imgs: [] }
+  { id:1, title:'Modern 3BR House in Colombo', type:'For Sale', propType:'House', price:28500000, district:'Colombo', lat:6.9271, lng:79.8612, imgs: [] }
 ];
 let currentPhotos = [];
 let map, postMap, postMarker, markers = [];
@@ -233,12 +204,12 @@ let map, postMap, postMarker, markers = [];
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
-  if (id === 'browse') setTimeout(initBrowseMap, 100);
+  if (id === 'browse') setTimeout(initMap, 100);
   if (id === 'post') setTimeout(initPostMap, 100);
   window.scrollTo(0,0);
 }
 
-// PHOTO LOGIC
+// REAL PHOTO HANDLER
 document.getElementById('photo-input').addEventListener('change', function(e) {
   const files = Array.from(e.target.files);
   files.forEach(file => {
@@ -265,44 +236,44 @@ function removePhoto(i) {
   renderPreviews();
 }
 
-// BROWSE LOGIC
-function initBrowseMap() {
+// MAP LOGIC
+function initMap() {
   if (map) { map.invalidateSize(); return; }
   map = L.map('map').setView([7.8731, 80.7718], 7);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-  renderBrowse();
+  applyFilters();
 }
 
-function renderBrowse() {
-  const query = document.getElementById('b-search').value.toLowerCase();
-  const dist = document.getElementById('f-dist').value;
-  
-  const filtered = listings.filter(l => 
-    (dist === 'All' || l.dist === dist) && l.title.toLowerCase().includes(query)
-  );
-
-  const grid = document.getElementById('browseGrid');
-  grid.innerHTML = filtered.map(l => `
+function renderCards(data) {
+  const grid = document.getElementById('cardsGrid');
+  grid.innerHTML = data.map(l => `
     <div class="prop-card">
-      <div class="card-img" style="background-image: url(${l.imgs[0] || ''})">${!l.imgs[0] ? '🏠' : ''}</div>
+      <div class="card-img" style="background-image: url(${l.imgs[0] || ''}); background-color: #2c1810;">
+        ${!l.imgs[0] ? '🏠' : ''}
+      </div>
       <div class="card-body">
         <div class="card-price">LKR ${l.price.toLocaleString()}</div>
-        <div style="font-weight: 700; margin: 4px 0;">${l.title}</div>
-        <div style="color: var(--text-muted); font-size: 13px;">📍 ${l.dist}</div>
+        <div style="font-weight:600; margin-top:5px;">${l.title}</div>
+        <div style="font-size:12px; color:var(--muted);">📍 ${l.district}</div>
       </div>
     </div>
   `).join('');
-
-  markers.forEach(m => map.removeLayer(m));
-  markers = filtered.map(l => L.marker([l.lat, l.lng]).addTo(map).bindPopup(l.title));
 }
 
-// POST LOGIC
+function applyFilters() {
+  renderCards(listings);
+  markers.forEach(m => map.removeLayer(m));
+  listings.forEach(l => {
+    let m = L.marker([l.lat, l.lng]).addTo(map).bindPopup(l.title);
+    markers.push(m);
+  });
+}
+
 function initPostMap() {
   if (postMap) { postMap.invalidateSize(); return; }
-  postMap = L.map('postMap').setView([6.0535, 80.2210], 12);
+  postMap = L.map('postMap').setView([6.9271, 79.8612], 12);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(postMap);
-  postMarker = L.marker([6.0535, 80.2210], {draggable: true}).addTo(postMap);
+  postMarker = L.marker([6.9271, 79.8612], {draggable: true}).addTo(postMap);
   postMarker.on('dragend', () => {
     const p = postMarker.getLatLng();
     document.getElementById('f-lat').value = p.lat;
@@ -312,38 +283,32 @@ function initPostMap() {
 
 function submitAd() {
   const title = document.getElementById('f-title').value;
-  if (!title) return alert("Please enter a title");
+  if (!title) return showToast("Please add a title");
   
   listings.unshift({
     id: Date.now(),
     title: title,
     price: parseInt(document.getElementById('f-price').value),
-    type: document.getElementById('f-type').value,
-    dist: "Galle", // Simplified for example
+    propType: document.getElementById('f-proptype').value,
+    district: 'Colombo',
     lat: parseFloat(document.getElementById('f-lat').value),
     lng: parseFloat(document.getElementById('f-lng').value),
     imgs: [...currentPhotos]
   });
-  document.getElementById('successOverlay').style.display = 'flex';
+  
+  document.getElementById('successOverlay').classList.add('show');
 }
 
-function quickSearch() {
-  const val = document.getElementById('h-search').value;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function doHeroSearch() {
+  const q = document.getElementById('h-search').value;
   showPage('browse');
-  document.getElementById('b-search').value = val;
-  renderBrowse();
-}
-
-function filterBrowse(type) {
-  showPage('browse');
-  document.getElementById('b-search').value = type;
-  renderBrowse();
-}
-
-function setChip(el, val) {
-  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  renderBrowse();
 }
 </script>
 </body>
